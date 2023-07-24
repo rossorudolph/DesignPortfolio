@@ -5,13 +5,6 @@ function setup() {
    
   }
 
-function mousePressed() {
-  if (mouseX > 0 && mouseX < 700 && mouseY > 0 && mouseY < 700) {
-    let fs = fullscreen();
-    fullscreen(!fs);
-  }
-}
-
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
