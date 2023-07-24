@@ -13,10 +13,6 @@ fft = new p5.FFT(0.8,64);
 fft.setInput(mic);
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-}
-
 function draw() {
 background(0);
 let spectrum = fft.analyze();
