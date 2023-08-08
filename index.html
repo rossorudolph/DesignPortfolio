@@ -4,21 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-  </head>
     <style>
-     .button {
-          background-color: #aaaaaa30;
-          border: none;
-          color: white;
-          padding: 5px 10px;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font-size: 20px;
-          margin: 4px 2px;
-          cursor: pointer;
-        }
-      </style>
+      .button-container {
+        //padding-left: 20px; /* Add left padding to the button container */
+      }
+
+      .button {
+        background-color: #aaaaaa30;
+        border: none;
+        color: gray;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+      .header-title {
+      padding-left: 40px; /* Add left padding to the h1 element */
+    }
+    </style>
+  </head>
   <body>
     <div class="canvas-container">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
@@ -27,15 +34,18 @@
     <div class="overlay">
       <nav>
       </nav>
-      <br> <br> <br> <br>
+      <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br><br> <br> <br> <br> <br>
+      <div class="header-title">
       <h1 style="color:grey;">are we having fun yet</h1>
-      <p style="color:grey;">meeeep</p>
-      <br> <br> <br>
-      <a href="./aboutyou.html" class="button">see some sounds</a>
-      <a href="./aboutme.html" class="button">about me</a>
-      <a href="./tao.html" class="button">tao</a>
-
+      <p style="color:grey;">i sure hope so</p>
+      <br> <br> <br> 
+      <div class="button-container">
+        <a href="./aboutyou.html" class="button">see sounds</a>
+        <br>
+        <a href="./tao.html" class="button" >tao</a>
+      </div>
+      <br><br><br><br><br>
+      <a href="./aboutme.html" style="color:grey;" >about me</a>
     </div>
-    
   </body>
 </html>
