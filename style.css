@@ -50,9 +50,23 @@ canvas {
         font-size: 16px;
         margin: 6px 6px;
         cursor: pointer;
-        top: 6;
-        left: 6;
       }
+
+.backbutton {
+        position: absolute;
+        background-color: #aaaaaa30;
+        border: none;
+        color: #BBBBBB;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        top: 4px;
+        left: 7px;
+}
       .header-title {
       padding-left: 40px; /* Add left padding to the h1 element */
     }
