@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Open Sans', sans-serif;
+
+}
+
+.canvas-container {
+  position: relative;
+}
+
+canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Set the z-index to 1 to position the canvas below the HTML elements */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2; /* Set the z-index to 2 to position the HTML elements above the canvas */
+}
+
+.overlayimg {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2; /* Set the z-index to 2 to position the HTML elements above the canvas */
+  }
+
+      .button-container {
+        //padding-left: 20px; /* Add left padding to the button container */
+      }
+
+      .button {
+        background-color: #aaaaaa30;
+        border: none;
+        color: #BBBBBB;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+      .header-title {
+      padding-left: 40px; /* Add left padding to the h1 element */
+    }
