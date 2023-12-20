@@ -50,6 +50,8 @@ canvas {
         font-size: 16px;
         margin: 6px 6px;
         cursor: pointer;
+        top: 6;
+        left: 6;
       }
       .header-title {
       padding-left: 40px; /* Add left padding to the h1 element */
