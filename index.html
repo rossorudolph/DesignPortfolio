@@ -3,73 +3,14 @@
 <head>
    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ross's Portfolio</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
-    <style>
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden; 
-            width: 100%; 
-            height: 100%; 
-            font-family: "Karla", sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 300;
-        }
-        canvas { 
-            display: block; 
-            width: 100%; 
-            height: 100%; 
-        }
-        #overlay {
-            position: absolute;
-            top: 15%;
-            left: 5%;
-            width: 50%;
-            text-align: left;
-            color: #603838;
-            z-index: 10;
-        }
-        h1 {
-            font-size: 35px;
-            margin-bottom: 20px;
-            font-family: "EB Garamond", serif;
-            font-optical-sizing: auto;
-            font-weight: 150;
-            font-style: normal;
-
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 0 0px;
-            border-radius: 20px;
-            background-color: #FFFFFF;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            width: 250px;
-            font-family: "Karla", sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 300;
-        }
-        #designBtn {
-            color: #73CDA2;
-            box-shadow: 0 0 10px #73CDA2;
-        }
-        #artBtn {
-            color: #F3A8D2;
-            box-shadow: 0 0 10px #F3A8D2;
-        }
-        .btn:hover {
-            transform: scale(1.05);
-        }
-    </style>
+      <link rel="stylesheet" href="style.css" />
+      
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <canvas id="myCanvas"></canvas>
     <div id="overlay">
@@ -81,96 +22,10 @@
         <p>I take seriously the role tech plays in impacting society.
         I have in-house design experience working with Spire, Ammunition, and Samsung. I've also exhibited an immersive art installation at Gray Area Theatre. </p>
     </div>
+  
+    <script src="background-sketch.js"></script>
+
     <script>
-    const canvas = document.getElementById('myCanvas');
-    const ctx = canvas.getContext('2d');
-
-    let circles = [];
-    let width, height;
-    let mouseX = 0, mouseY = 0;
-
-    function resizeCanvas() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-        initializeCircles();
-    }
-
-    function initializeCircles() {
-        circles = [];
-        for (let i = 0; i < 10; i++) {
-            circles.push(new Circle(Math.random() * width, Math.random() * height));
-        }
-    }
-
-    class Circle {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-            this.width = Math.random() * 60 + 30;
-            this.height = Math.random() * 60 + 30;
-            this.radius = Math.random() * 80 + 30;
-            this.noiseOffset = Math.random() * 10;
-            this.speed = Math.random() * 0.8 + 0.1;
-            this.feather = Math.random() * 30 + 50;
-            this.avoidanceRadius = 150;
-            this.maxAvoidanceForce = 2;
-        }
-
-        move() {
-            let dx = this.speed * Math.cos(this.noiseOffset);
-            let dy = this.speed * Math.sin(this.noiseOffset + 1000);
-
-            let distToMouse = Math.hypot(this.x - mouseX, this.y - mouseY);
-            if (distToMouse < this.avoidanceRadius) {
-                let avoidanceFactor = (this.avoidanceRadius - distToMouse) / this.avoidanceRadius;
-                let avoidanceForce = Math.min(avoidanceFactor * this.maxAvoidanceForce, this.maxAvoidanceForce);
-                dx += avoidanceForce * (this.x - mouseX) / distToMouse;
-                dy += avoidanceForce * (this.y - mouseY) / distToMouse;
-            }
-
-            this.x += dx;
-            this.y += dy;
-
-            const totalRadius = this.radius + this.feather;
-            if (this.x < -totalRadius) this.x = width + totalRadius;
-            if (this.x > width + totalRadius) this.x = -totalRadius;
-            if (this.y < -totalRadius) this.y = height + totalRadius;
-            if (this.y > height + totalRadius) this.y = -totalRadius;
-
-            this.noiseOffset += 0.01;
-        }
-
-        display() {
-            for (let d = this.radius + this.feather; d > this.radius; d -= 2) {
-                let inter = (d - this.radius) / this.feather;
-                let alpha = Math.floor((1 - inter) * 50);
-                ctx.fillStyle = `rgba(213, 213, 213, ${alpha / 100})`;
-                ctx.beginPath();
-                ctx.ellipse(this.x, this.y, d, d, 0, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-    }
-    
-    function draw() {
-        ctx.fillStyle = 'rgb(244, 244, 244)';
-        ctx.fillRect(0, 0, width, height);
-
-        for (let circle of circles) {
-            circle.move();
-            circle.display();
-        }
-
-        requestAnimationFrame(draw);
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    canvas.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
 
     const designBtn = document.getElementById('designBtn');
     const artBtn = document.getElementById('artBtn');
