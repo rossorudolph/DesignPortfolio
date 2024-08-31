@@ -1,72 +1,144 @@
-body {
-  margin: 0;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-family: 'Open Sans', sans-serif;
 
+body {
+  margin: 0; 
+  padding: 0; 
+  overflow: hidden; 
+  width: 100%; 
+  height: 100%; 
+  font-family: "Karla", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  color: #272424;
 }
 
 .canvas-container {
-  position: relative;
-}
-
-canvas {
   display: block;
+}
+
+canvas { 
+  display: block; 
+  width: 100%; 
+  height: 100%;
+}
+
+#overlay {
+  position: absolute;
+  top: 15%;
+  left: 5%;
+  width: 50%;
+  text-align: left;
+  color: #603838;
+  z-index: 10;
+}
+
+
+.top-header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  z-index: 20; /* Ensure it's above other content */
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 150;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px; /* Adjust size as needed */
+  color: #603838;
+}
+
+.headerBtn {
+  text-decoration: none;
+  color: #603838; /* Adjust color as needed */
+}
+
+.separator {
+  margin: 0 10px;
+}
+
+.current-page {
+  color: #603838; /* Adjust color as needed */
+
+}
+
+#header-overlay {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1; /* Set the z-index to 1 to position the canvas below the HTML elements */
+  width: 100%;
+  z-index: 10;
 }
 
-.overlay {
+
+
+
+.scroll-wrapper {
   position: absolute;
-  top: 0;
+  top: 0; 
+  right: 0;
+  bottom: 0;
   left: 0;
-  z-index: 2; /* Set the z-index to 2 to position the HTML elements above the canvas */
+  overflow-y: scroll;
 }
 
-.overlayimg {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  z-index: 2; /* Set the z-index to 2 to position the HTML elements above the canvas */
-  }
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 0 0px;
+  border-radius: 20px;
+  background-color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  width: 250px;
+  font-family: "Karla", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+ }
 
-      .button-container {
-        //padding-left: 20px; /* Add left padding to the button container */
-      }
-
-      .button {
-        background-color: #aaaaaa30;
-        border: none;
-        color: #BBBBBB;
-        padding: 5px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 6px 6px;
-        cursor: pointer;
-      }
-
-.backbutton {
-        position: absolute;
-        background-color: #aaaaaa30;
-        border: none;
-        color: #BBBBBB;
-        padding: 5px 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        top: 4px;
-        left: 7px;
+#designBtn {
+  color: #73CDA2;
+  box-shadow: 0 0 10px #73CDA2;
 }
-      .header-title {
-      padding-left: 40px; /* Add left padding to the h1 element */
-    }
+
+#artBtn {
+  color: #F3A8D2;
+  box-shadow: 0 0 10px #F3A8D2;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+
+h1 {
+  font-size: 35px;
+  margin-bottom: 20px;
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 150;
+  font-style: normal;
+}
+
+h2{
+  font-size: 35px;
+  margin-bottom: 20px;
+  font-family: "EB Garamond", serif;
+  font-optical-sizing: auto;
+  font-weight: 150;
+  font-style: normal;
+  color: #FF006B;
+}
+
+.header-title {
+  padding-left: 100px; /* Adjust the value as needed */
+}
+
+.action-button {
+  padding-left: 100px; /* Adjust the value as needed */
+}
