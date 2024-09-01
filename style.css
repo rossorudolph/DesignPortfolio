@@ -116,7 +116,7 @@ canvas {
     text-decoration: underline;
 }
 
-headerBtn {
+.headerBtn {
     text-decoration: none;
     color: #696969;
     transition: color 0.3s ease;
