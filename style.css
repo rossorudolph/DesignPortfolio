@@ -75,9 +75,8 @@ canvas {
   font-style: normal;
   font-weight: 300;
   font-size: 20px; /* Adjust size as needed */
-  color: #434343;
+  /*color: #434343;*/
 }
-
 
 .separator {
   margin: 0 10px;
@@ -85,7 +84,7 @@ canvas {
 
 .current-page {
   color: #434343;
-
+  text-decoration: underline;
 }
 
 #header-overlay {
@@ -155,11 +154,11 @@ canvas {
   color: #EFF400;
 }
 .headerBtn:visited {
-  color: #434343;
+  color: #696969;
 }
 
 .headerBtn:active {
-  color: #434343;
+  color: #696969;
 }
 
 .headerBtn:visited:hover {
