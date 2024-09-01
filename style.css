@@ -1,155 +1,145 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "Karla", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+}
 
 body {
-  margin: 0; 
-  padding: 0; 
-  overflow: hidden; 
-  width: 100%; 
-  height: 100%; 
-  font-family: "Karla", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  color: #272424;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .canvas-container {
-  display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
-canvas { 
-  display: block; 
-  width: 100%; 
-  height: 100%;
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.content-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    z-index: 10;
+    padding-top: 60px; /* Adjust based on your header height */
+}
+
+.top-header-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    z-index: 20;
+    font-family: "EB Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-size: 20px;
+    color: #999999;
 }
 
 #overlay {
-  position: absolute;
-  top: 5%;
-  left: 5%;
-  width: 60%;
-  text-align: left;
-  color: #603838;
-  z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 60px); /* Adjust based on your header height */
 }
 
 .bodycontainer {
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255,255,255,0.75);
+    box-shadow: 0 0 10px #FFFFFF;
+}
+
+.aboutbodycontainer {
   position: absolute;
   left: 5%;
   top: 10%;
   width: 80%;
   padding: 5%;
   text-align:left;
-  background-color: rgba(255,255,255,0.75);
   z-index: 10;
-  box-shadow: 0 0 10px #F3A8D2;
-}
-
-.top-header-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0;
-  z-index: 20; /* Ensure it's above other content */
-  font-family: "Karla", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 150;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 20px; /* Adjust size as needed */
-  color: #603838;
-}
-
-.headerBtn {
-  text-decoration: none;
-  color: #603838; /* Adjust color as needed */
-}
-
-.separator {
-  margin: 0 10px;
-}
-
-.current-page {
-  color: #603838; /* Adjust color as needed */
-
-}
-
-#header-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-}
-
-
-
-
-.scroll-wrapper {
-  position: absolute;
-  top: 0; 
-  right: 0;
-  bottom: 0;
-  left: 0;
   overflow-y: scroll;
 }
 
 .btn {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 0 0px;
-  border-radius: 20px;
-  background-color: #FFFFFF;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  width: 250px;
-  font-family: "Karla", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
- }
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    width: 250px;
+    font-family: "Karla", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+}
 
 #designBtn {
-  color: #73CDA2;
-  box-shadow: 0 0 10px #73CDA2;
+    color: #73CDA2;
+    box-shadow: 0 0 10px #FFFFFF;
 }
 
 #artBtn {
-  color: #F3A8D2;
-  box-shadow: 0 0 10px #F3A8D2;
+    color: #F3A8D2;
+    box-shadow: 0 0 10px #FFFFFF;
 }
 
 .btn:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
-
-h1 {
-  font-size: 35px;
-  margin-bottom: 20px;
-  font-family: "EB Garamond", serif;
-  font-optical-sizing: auto;
-  font-weight: 150;
-  font-style: normal;
+.about-link {
+    margin-top: 20px;
+    color: #696969;
+    text-decoration: underline;
 }
 
-h2{
-  font-size: 35px;
-  margin-bottom: 20px;
-  font-family: "EB Garamond", serif;
-  font-optical-sizing: auto;
-  font-weight: 150;
-  font-style: normal;
-  color: #F3A8D2;
+.headerBtn {
+    text-decoration: none;
+    color: #696969;
 }
 
-.header-title {
-  padding-left: 100px; /* Adjust the value as needed */
+.separator, .current-page {
+    color: #696969;
 }
 
-.action-button {
-  padding-left: 100px; /* Adjust the value as needed */
+h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+    font-family: "EB Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 150;
+    font-style: normal;
+    color: #F3A8D2;
 }
+
+iframe {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+}
+
+/* Add any additional styles you need here */
