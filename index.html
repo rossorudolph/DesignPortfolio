@@ -1,56 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" />
+      <link rel="stylesheet" href="style.css" />
+      
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="canvas-container">
-        <canvas id="myCanvas"></canvas>
-    </div>
-    <div class="content-wrapper">
-        <div class="top-header-container">
-            <a href="./index.html" id="headerBtn" class="headerBtn">Ross Rudolph</a>
-        </div>
-        <div id="overlay">
-            <button id="designBtn" class="btn">Design Case Studies &#128274;</button>
-            <button id="artBtn" class="btn">Interactive Art</button>
-            <a href="aboutme.html" class="about-link">about me</a>
-        </div>
+    <canvas id="myCanvas"></canvas>
+    <div id="overlay">
+ 
+  <div class="top-header-container">
+    <a href="./index.html" id="headerBtn" class="headerBtn">Ross Rudolph</a>
+  </div>
+
+        <br> <br> <br> <br> 
+        <button id="designBtn" class="btn">Design Case Studies &#128274; </button>
+        <br> <br>
+        <button id="artBtn" class="btn">Interactive Art</button>
+        <br> <br> <br>
+        <a href="aboutme.html" class="about-link">about me</a>
     </div>
     <script src="background-sketch.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const designBtn = document.getElementById('designBtn');
-        const artBtn = document.getElementById('artBtn');
+    const designBtn = document.getElementById('designBtn');
+    const artBtn = document.getElementById('artBtn');
 
-        designBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const password = prompt("Please enter the password:");
-            if (password === "asabovesobelow") {
-                window.location.href = "design.html";
-            } else {
-                alert("Incorrect password");
-            }
-        });
-
-        artBtn.addEventListener('click', function() {
-            window.location.href = "art.html";
-        });
-
-        // If these functions are defined in background-sketch.js, you might need to call them here
-        if (typeof resizeCanvas === 'function') {
-            resizeCanvas();
-        }
-        if (typeof draw === 'function') {
-            draw();
+    designBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const password = prompt("Please enter the password:");
+        if (password === "asabovesobelow") {
+            window.location.href = "design.html";
+        } else {
+            alert("Incorrect password");
         }
     });
+
+    artBtn.addEventListener('click', (e) => {
+        window.location.href = "art.html";
+    });
+
+    resizeCanvas();
+    draw();
     </script>
 </body>
 </html>
