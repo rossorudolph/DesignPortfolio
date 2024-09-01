@@ -23,9 +23,9 @@ canvas {
 
 #overlay {
   position: absolute;
-  top: 15%;
+  top: 5%;
   left: 5%;
-  width: 50%;
+  width: 60%;
   text-align: left;
   color: #603838;
   z-index: 10;
@@ -34,7 +34,7 @@ canvas {
 .bodycontainer {
   position: absolute;
   left: 5%;
-  top: 15%;
+  top: 10%;
   width: 80%;
   padding: 5%;
   text-align:left;
