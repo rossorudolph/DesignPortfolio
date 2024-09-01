@@ -126,6 +126,18 @@ headerBtn {
     color: #EFF400;
 }
 
+.headerBtn:visited {
+    color: #434343;
+}
+
+.headerBtn:active {
+    color: #434343;
+}
+
+.headerBtn:visited:hover {
+    color: #EFF400;
+}
+
 .separator, .current-page {
     color: #696969;
 }
