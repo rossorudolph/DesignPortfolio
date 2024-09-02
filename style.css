@@ -36,16 +36,19 @@ canvas {
 }
 
 .bodycontainer {
-  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  position: relative;
   left: 5%;
   top: 10%;
   width: 80%;
   padding: 5%;
-  text-align:left;
-  background-color: rgba(255,255,255,0.75);
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.75);
   z-index: 10;
   box-shadow: 0 0 10px #FFFFFF;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .aboutbodycontainer {
@@ -169,19 +172,26 @@ canvas {
   color: #696969;
 }
 
-
-.video-container {
-  width: 560px;
-  height: 315px;
-  overflow: hidden;
-}
-
 .video-container iframe {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border: 0;
 }
 
+.text-content {
+  flex: 1;
+  min-width: 300px;
+  margin-right: 50px;
+}
+
+.video-container {
+  flex: 1;
+  min-width: 300px;
+  max-width: 1260px;
+  aspect-ratio: 16 / 9; /* Maintain 16:9 aspect ratio */
+  position: relative;
+  overflow: hidden;
+}
 
 h1 {
   font-size: 35px;
@@ -203,9 +213,9 @@ h2{
 }
 
 .header-title {
-  padding-left: 100px; /* Adjust the value as needed */
+  padding-left: 100px;
 }
 
 .action-button {
-  padding-left: 100px; /* Adjust the value as needed */
+  padding-left: 100px;
 }
