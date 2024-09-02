@@ -32,7 +32,7 @@ class Circle {
             this.noiseOffset = Math.random() * 10;
             //this.speed = Math.random() * 0.8 + 0.1;
             this.speed = Math.random() * 0.05 + 0.15;
-            this.feather = Math.random() * 30 + 50;
+            this.feather = Math.random() * 50 + 70; /* 30 + 50 */
             this.avoidanceRadius = 300;
             this.maxAvoidanceForce = 1;
         }
@@ -65,7 +65,7 @@ class Circle {
             for (let d = this.radius + this.feather; d > this.radius; d -= 2) {
                 let inter = (d - this.radius) / this.feather;
                 let alpha = Math.floor((1 - inter) * 50);
-                ctx.fillStyle = `rgba(213, 213, 213, ${alpha / 100})`;
+                ctx.fillStyle = `rgba(233, 233, 233, ${alpha / 100})`; /* 213 */
                 ctx.beginPath();
                 ctx.ellipse(this.x, this.y, d, d, 0, 0, Math.PI * 2);
                 ctx.fill();
@@ -74,7 +74,7 @@ class Circle {
 }
 
 function draw() {
-    ctx.fillStyle = 'rgb(244, 244, 244)';
+    ctx.fillStyle = 'rgb(250, 250, 250)'; /* 244 */
     ctx.fillRect(0, 0, width, height);
 
     for (let circle of circles) {
