@@ -41,7 +41,7 @@ canvas {
   align-items: flex-start;
   position: relative;
   left: 5%;
-  top: 10%;
+  top: 5%;
   width: 80%;
   padding: 5%;
   text-align: left;
@@ -49,7 +49,45 @@ canvas {
   z-index: 10;
   box-shadow: 0 0 10px #FFFFFF;
   overflow-y: auto;
+  /*justify-content: space-between;*/
 }
+
+.column {
+  padding: 10px; /* Optional: Add padding to columns */
+}
+
+#column1 {
+  flex: 1; /* Adjust width as needed */
+  margin-right: -100px;
+}
+
+#column2 {
+  flex: 1;
+  margin-right: 20px;
+}
+
+#column2 h2 {
+  margin-bottom: 10px; /* Adjust this value to reduce the space */
+}
+
+#column2 p {
+  margin-top: 5px; /* Adjust this value to reduce the space */
+}
+
+#column3 {
+  flex: 3; /* Adjust width as needed */
+}
+
+#new-column1 {
+  flex: 1; /* Adjust width as needed */
+  margin-right: 10%;
+}
+
+#new-column2 {
+  flex: 2; /* Adjust width as needed */
+  display: flex;
+}
+
 
 .aboutbodycontainer {
   position: absolute;
@@ -99,9 +137,6 @@ canvas {
   width: 100%;
   z-index: 10;
 }
-
-
-
 
 .scroll-wrapper {
   position: absolute;
@@ -174,6 +209,15 @@ canvas {
   color: #696969;
 }
 
+.video-container {
+  flex: 1;
+  min-width: 300px;
+  /*max-width: 1260px;*/
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+}
+
 .video-container iframe {
   width: 100%;
   height: 100%;
@@ -186,14 +230,7 @@ canvas {
   margin-right: 50px;
 }
 
-.video-container {
-  flex: 1;
-  min-width: 300px;
-  max-width: 1260px;
-  aspect-ratio: 16 / 9; /* Maintain 16:9 aspect ratio */
-  position: relative;
-  overflow: hidden;
-}
+
 
 h1 {
   font-size: 35px;
@@ -205,13 +242,13 @@ h1 {
 }
 
 h2{
-  font-size: 35px;
+  font-size: 45px;
   margin-bottom: 20px;
   font-family: "EB Garamond", serif;
   font-optical-sizing: auto;
   font-weight: 150;
   font-style: normal;
-  color: #F3A8D2;
+  color: #232323;
 }
 
 .header-title {
