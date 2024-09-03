@@ -224,6 +224,10 @@ canvas {
   border: 0;
 }
 
+iframe {
+  pointer-events: none; /* Disable pointer events */
+}
+
 .text-content {
   flex: 1;
   min-width: 300px;
