@@ -35,6 +35,7 @@ canvas {
   z-index: 10;
 }
 
+
 .bodycontainer {
   display: flex;
   flex-wrap: wrap;
@@ -51,6 +52,22 @@ canvas {
   overflow-y: auto;
   /*justify-content: space-between;*/
 }
+
+
+/*.bodycontainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  position: relative;
+  margin: 0 auto;
+  width: 90%;
+  padding: 0;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.75);
+  z-index: 10;
+  box-shadow: 0 0 10px #FFFFFF;
+  overflow-y: auto;
+}*/
 
 .column {
   padding: 10px; /* Optional: Add padding to columns */
@@ -234,6 +251,21 @@ iframe {
   margin-right: 50px;
 }
 
+.centered-text {
+  margin: 10px 0;
+}
+
+.centered-container {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center elements horizontally */
+  justify-content: center; /* Center elements vertically */
+  text-align: center; /* Center text */
+  padding: 20px; /* Add padding for spacing */
+  width: 100%; /* Ensure the container takes full width */
+  margin: 0 -5%; /* Center the container horizontally */
+  box-sizing: border-box;
+}
 
 
 h1 {
@@ -247,10 +279,30 @@ h1 {
 
 h2{
   font-size: 45px;
-  margin-bottom: 20px;
+  margin-bottom: -20px;
   font-family: "EB Garamond", serif;
   font-optical-sizing: auto;
   font-weight: 150;
+  font-style: normal;
+  color: #232323;
+}
+
+h3{
+  font-size: 30px;
+  margin-bottom: -5px;
+  font-family: "Karla", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 250;
+  font-style: normal;
+  color: #1d1d1d;
+}
+
+h4{
+  font-size: 40px;
+  margin-bottom: -5px;
+  font-family: "Karla", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 550;
   font-style: normal;
   color: #232323;
 }
