@@ -39,7 +39,7 @@ canvas {
 .bodycontainer {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  /*align-items: center;*/
   position: relative;
   left: 5%;
   top: 5%;
@@ -50,8 +50,24 @@ canvas {
   z-index: 10;
   box-shadow: 0 0 10px #FFFFFF;
   overflow-y: auto;
-  /*justify-content: space-between;*/
+  
+  align-items: flex-start;
+  justify-content: space-between;
 }
+
+.centered-container {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center elements horizontally */
+  justify-content: center; /* Center elements vertically */
+  text-align: center; /* Center text */
+  padding: 5%; /* Add padding for spacing */
+  width: 90%; /* Ensure the container takes full width */
+  left: 10%;
+  margin: 0 -5%; /* Center the container horizontally */
+  box-sizing: border-box;
+}
+
 
 
 /*.bodycontainer {
@@ -70,7 +86,10 @@ canvas {
 }*/
 
 .column {
-  padding: 10px; /* Optional: Add padding to columns */
+  flex: 1; /* Allow columns to grow and fill the space */
+  padding: 10px;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
 }
 
 #column1 {
@@ -255,17 +274,6 @@ iframe {
   margin: 10px 0;
 }
 
-.centered-container {
-  display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  align-items: center; /* Center elements horizontally */
-  justify-content: center; /* Center elements vertically */
-  text-align: center; /* Center text */
-  padding: 20px; /* Add padding for spacing */
-  width: 100%; /* Ensure the container takes full width */
-  margin: 0 -5%; /* Center the container horizontally */
-  box-sizing: border-box;
-}
 
 
 h1 {
@@ -278,7 +286,7 @@ h1 {
 }
 
 h2{
-  font-size: 45px;
+  font-size: 55px;
   margin-bottom: -20px;
   font-family: "EB Garamond", serif;
   font-optical-sizing: auto;
@@ -288,13 +296,14 @@ h2{
 }
 
 h3{
-  font-size: 30px;
+  font-size: 20px;
   margin-bottom: -5px;
   font-family: "Karla", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 250;
+  font-weight: 450;
   font-style: normal;
   color: #1d1d1d;
+  letter-spacing:-0.01cm;
 }
 
 h4{
@@ -305,6 +314,17 @@ h4{
   font-weight: 550;
   font-style: normal;
   color: #232323;
+}
+
+h5{
+  font-size: 55px;
+  margin-bottom: -5px;
+  font-family: "Karla", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 650;
+  font-style: normal;
+  color: #232323;
+  letter-spacing:-0.05cm;
 }
 
 .header-title {
