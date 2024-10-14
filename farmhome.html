@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="style.css" />
+      
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+</head>
+
+<body style="margin: 0; padding: 0; height: 100vh; position: relative;">
+  <canvas id="myCanvas"></canvas>
+  
+  <div id="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center;">
+  </div>
+  
+  <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background-image: url('farm home bg image.png'); background-size: cover; background-position: bottom;">
+  </div>
+  
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; text-align: center;">
+    <button style="position: absolute; top: 20%; left: 35%; background-color: white; color: #B1BD0A; border: 2px solid #B1BD0A; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px">Hillside Orchard</button>
+    <button style="position: absolute; top: 40%; left: 55%; background-color: white; color: #F35E5E; border: 2px solid #F35E5E; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px">Lower Orchard North</button>
+    <button style="position: absolute; top: 60%; left: 5%; background-color: white; color: #E358FF; border: 2px solid #E358FF; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px">Western Plum Alley</button>
+    <button style="position: absolute; top: 75%; left: 50%; background-color: white; color: #008856; border: 2px solid #008856; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px" onclick="window.location.href='plum alley.html'">Western Plum Alley</button>
+    <p style="position: absolute; top: 94%; left: 50%; transform: translateX(-50%); font-family: EB Garamond, serif; font-weight: 300; font-size: 20px;">Orchard Map</p>
+  </div>
+
+<script>
+    const artBtn = document.getElementById('artBtn');
+
+    artBtn.addEventListener('click', (e) => {
+        window.location.href = "art.html";
+    });
+
+</script>
+</body>
+</html>
