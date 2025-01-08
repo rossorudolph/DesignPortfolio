@@ -252,6 +252,7 @@ canvas {
   aspect-ratio: 16 / 9;
   position: relative;
   overflow: hidden;
+  z-index: 10;
 }
 
 .video-container iframe {
@@ -262,6 +263,10 @@ canvas {
 
 iframe {
   pointer-events: none; /* Disable pointer events */
+}
+
+.clickable-iframe {
+  pointer-events: auto; /* Enable pointer events for clickable iframes */
 }
 
 .text-content {
