@@ -7,46 +7,71 @@
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
   <style>
-    #treeDetailOverlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.8);
-        z-index: 4;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        flex-direction: column;
-    }
-    #treeDetailOverlay .title {
-      font-family: 'Karla', sans-serif;
-        font-weight: 500;
-        font-size: 44px;
-        color: #393939;
-    }
-    #treeDetailText {
-        font-family: 'Karla', sans-serif;
-        font-weight: 300;
-        font-size: 20px;
-        color: #393939;
-        text-align: left;
-        margin: 20px auto;
-        padding: 20px;
-        border: 1.5px solid #393939;
-        border-radius: 8px;
-        background-color: rgba(255, 255, 255, 0.5);
-    }
-    #closeOverlayButton {
-        background: none;
-        border: none;
-        color: #696565;
-        font-size: 46px;
-        cursor: pointer;
-        margin-top: 40px;
-    }
+#treeDetailOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 4;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+/* Add max-width container for title area */
+.titleContainer {
+    width: 80%;  /* Same as description box */
+    margin: 0 auto;
+    margin-bottom: 10px;  /* Moderate space before description box */
+    max-width: 800px;  /* Optional: maximum width for very wide screens */
+}
+
+#treeDetailOverlay .title {
+    font-family: 'Karla', sans-serif;
+    font-weight: 500;
+    font-size: 44px;
+    color: #393939;
+    margin: 0 0 8px 0;  /* Add some space between title and tree number */
+    padding: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+#treeNumber {
+    font-family: 'Karla', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #696565;
+    margin: 0;
+    padding: 0;
+}
+
+#treeDetailText {
+    font-family: 'Karla', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #393939;
+    text-align: left;
+    margin: 0 auto;  /* Center the box */
+    padding: 20px;
+    border: 1.5px solid #393939;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+#closeOverlayButton {
+    background: none;
+    border: none;
+    color: #696565;
+    font-size: 46px;
+    cursor: pointer;
+    margin-top: 40px;
+}
 </style>
 </head>
 <body style="margin: 0; padding: 0; height: 100vh; overflow: hidden;">
@@ -56,53 +81,68 @@
 </div>
 
 <div style="position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: flex-end; overflow: hidden; z-index: 2;">
-<div style="position: relative; height: 100vh; width: auto;">
-    <img id="plumAlleyImage" src="assets/plum alley.png" style="height: 100%; width: auto; object-fit: contain; object-position: bottom center;">
 
-    <button id="treeButton" style="position: absolute; top: 20%; left: 35%; background-color: rgba(255, 255, 255, 0.5); color: #1C4E24; border: 2px solid #1C4E24; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 50%; width: 60px; height: 60px;">
-        <img src="assets/tree icon green.svg" style="width: 24px; height: 24px; transform: translateX(-18%);">
-    </button>
-
-    <button id="treeButton" style="position: absolute; top: 30%; left: 30%; background-color: rgba(255, 255, 255, 0.5); color: #1C4E24; border: 2px solid #1C4E24; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 50%; width: 60px; height: 60px;">
-      <img src="assets/tree icon green.svg" style="width: 24px; height: 24px; transform: translateX(-18%);">
-  </button>
-
-    <button id="backButton" style="position: absolute; bottom: 2%; left: 20%; transform: translateX(-50%); display: flex; align-items: center; background: none; border: none; cursor: pointer;">
-        <img src="assets/back button.svg" alt="Back Button" style="width: 20px; height: 20px;">
-    </button>
-
-    <p style="color: #696565; position: absolute; bottom: 2%; left: 50%; transform: translateX(-50%) translateY(85%); display: flex; align-items: center; font-family: 'EB Garamond', serif; font-weight: 400; font-size: 25px;">Western Plum Alley</p>
-</div>
+    <div style="position: relative; height: 100vh; width: auto;">
+        <img id="plumAlleyImage" src="assets/plum alley.png" style="height: 100%; width: auto; object-fit: contain; object-position: bottom center;">
+        
+        <button id="backButton" style="position: absolute; bottom: 2%; left: 20%; transform: translateX(-50%); display: flex; align-items: center; background: none; border: none; cursor: pointer;">
+            <img src="assets/back button.svg" alt="Back Button" style="width: 20px; height: 20px;">
+        </button>
+    
+        <p style="color: #696565; position: absolute; bottom: 2%; left: 50%; transform: translateX(-50%) translateY(85%); display: flex; align-items: center; font-family: 'EB Garamond', serif; font-weight: 400; font-size: 25px;">Western Plum Alley</p>
+    </div>
 </div>
 
 <div id="treeDetailOverlay">
-<p class="title">Y: Satsuma Plum</p>
-<div id="treeDetailText">
-    <p>Responded well with vegetative growth to last year’s removal of ~half spurs; july good veg growth. light crop (though most I’ve ever seen-nh)</p>
-</div>
-<button id="closeOverlayButton">&times;</button>
+    <div class="titleContainer">
+        <p class="title"></p>
+        <p id="treeNumber"></p>
+    </div>
+    <div id="treeDetailText">
+        <p></p>
+    </div>
+    <button id="closeOverlayButton">&times;</button>
 </div>
 
+<!-- script section  -->
+<script src="sheet-connector.js"></script>
 <script>
-document.getElementById('backButton').addEventListener('click', function() {
-    window.location.href = 'farmhome.html';
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create all tree buttons
+        createTreeButtons();
 
-document.getElementById('treeButton').addEventListener('click', function() {
-    document.getElementById('treeDetailOverlay').style.display = 'flex';
-    const imageWidth = document.getElementById('plumAlleyImage').clientWidth;
-    document.getElementById('treeDetailText').style.width = imageWidth * 0.8 + 'px';
-});
+        // Back button handler
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.location.href = 'farmhome.html';
+        });
 
-document.getElementById('closeOverlayButton').addEventListener('click', function() {
-    document.getElementById('treeDetailOverlay').style.display = 'none';
-});
+        // Close button handlers
+        document.getElementById('closeOverlayButton').addEventListener('click', function() {
+            document.getElementById('treeDetailOverlay').style.display = 'none';
+        });
 
-document.getElementById('treeDetailOverlay').addEventListener('click', function(event) {
-    if (event.target === document.getElementById('treeDetailOverlay')) {
-        document.getElementById('treeDetailOverlay').style.display = 'none';
-    }
-});
+        document.getElementById('treeDetailOverlay').addEventListener('click', function(event) {
+            if (event.target === document.getElementById('treeDetailOverlay')) {
+                document.getElementById('treeDetailOverlay').style.display = 'none';
+            }
+        });
+        
+        // Add click handler for tree buttons
+        document.addEventListener('click', function(event) {
+            const button = event.target.closest('.treeButton');
+            if (button) {
+                document.getElementById('treeDetailOverlay').style.display = 'flex';
+                const imageWidth = document.getElementById('plumAlleyImage').clientWidth;
+                const boxWidth = imageWidth * 0.8 + 'px';
+                
+                document.getElementById('treeDetailText').style.width = boxWidth;
+                document.querySelector('.titleContainer').style.width = boxWidth;
+                
+                const treeName = button.getAttribute('data-tree-name');
+                updateTreePopup(treeName);
+            }
+        });
+    });
 </script>
 </body>
 </html>
