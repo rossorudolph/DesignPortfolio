@@ -72,6 +72,44 @@
     cursor: pointer;
     margin-top: 40px;
 }
+
+#datePlanted, #generalComments {
+    font-family: 'Karla', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #696565;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.description-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: #1C4E24;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    opacity: 0.7;
+}
+
+.nav-button:hover {
+    opacity: 1;
+}
+
+.treeButton.selected {
+    background-color: rgba(28, 78, 36, 0.3) !important; /* Darker green, semi-transparent */
+}
 </style>
 </head>
 <body style="margin: 0; padding: 0; height: 100vh; overflow: hidden;">
@@ -81,7 +119,6 @@
 </div>
 
 <div style="position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: flex-end; overflow: hidden; z-index: 2;">
-
     <div style="position: relative; height: 100vh; width: auto;">
         <img id="plumAlleyImage" src="assets/plum alley.png" style="height: 100%; width: auto; object-fit: contain; object-position: bottom center;">
         
@@ -97,9 +134,19 @@
     <div class="titleContainer">
         <p class="title"></p>
         <p id="treeNumber"></p>
+        <p id="datePlanted"></p>
+        <p id="generalComments"></p>
     </div>
     <div id="treeDetailText">
-        <p></p>
+        <div class="description-container">
+            <button class="nav-button" id="prevDescription">
+                <img src="assets/back button.svg" alt="Previous" style="width: 20px; height: 20px; transform: rotate(0deg);">
+            </button>
+            <p></p>
+            <button class="nav-button" id="nextDescription">
+                <img src="assets/back button.svg" alt="Next" style="width: 20px; height: 20px; transform: rotate(180deg);">
+            </button>
+        </div>
     </div>
     <button id="closeOverlayButton">&times;</button>
 </div>
@@ -116,21 +163,21 @@
             window.location.href = 'farmhome.html';
         });
 
-        // Close button handlers
-        document.getElementById('closeOverlayButton').addEventListener('click', function() {
-            document.getElementById('treeDetailOverlay').style.display = 'none';
-        });
-
-        document.getElementById('treeDetailOverlay').addEventListener('click', function(event) {
-            if (event.target === document.getElementById('treeDetailOverlay')) {
-                document.getElementById('treeDetailOverlay').style.display = 'none';
-            }
-        });
-        
         // Add click handler for tree buttons
         document.addEventListener('click', function(event) {
             const button = event.target.closest('.treeButton');
             if (button) {
+                // Add selected class to clicked button
+                document.querySelectorAll('.treeButton.selected').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                button.classList.add('selected');
+                
+                // Hide all tree labels
+                document.querySelectorAll('.tree-label').forEach(label => {
+                    label.style.display = 'none';
+                });
+                
                 document.getElementById('treeDetailOverlay').style.display = 'flex';
                 const imageWidth = document.getElementById('plumAlleyImage').clientWidth;
                 const boxWidth = imageWidth * 0.8 + 'px';
@@ -140,6 +187,31 @@
                 
                 const treeName = button.getAttribute('data-tree-name');
                 updateTreePopup(treeName);
+            }
+        });
+
+        // Close button handlers
+        document.getElementById('closeOverlayButton').addEventListener('click', function() {
+            document.getElementById('treeDetailOverlay').style.display = 'none';
+            // Remove selected class and show labels
+            document.querySelectorAll('.treeButton.selected').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.querySelectorAll('.tree-label').forEach(label => {
+                label.style.display = 'block';
+            });
+        });
+
+        document.getElementById('treeDetailOverlay').addEventListener('click', function(event) {
+            if (event.target === document.getElementById('treeDetailOverlay')) {
+                document.getElementById('treeDetailOverlay').style.display = 'none';
+                // Remove selected class and show labels
+                document.querySelectorAll('.treeButton.selected').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                document.querySelectorAll('.tree-label').forEach(label => {
+                    label.style.display = 'block';
+                });
             }
         });
     });
