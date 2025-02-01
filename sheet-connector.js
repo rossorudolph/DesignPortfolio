@@ -2,6 +2,23 @@
 const SHEET_ID = '1z7GA4E8VWyRUqgLmzl50YZdEu2zRTZ1pjCbOVbcUnWI';
 const API_KEY = 'AIzaSyBTJw2kHHhD4TLhKQ3uFCr9tW9lBWQaVmA';
 
+// Get the current page name from the URL
+const currentPage = window.location.pathname.split('/').pop().split('.')[0];
+console.log('Full pathname:', window.location.pathname);
+console.log('Current page name:', currentPage);
+
+// Map page names to sheet names
+const SHEET_NAMES = {
+    'plum_alley': 'western%20trees',
+    'lower_orchard_south': 'lower%20orchard%20south'
+};
+
+console.log('Mapped sheet name:', SHEET_NAMES[currentPage]);
+
+// Get the correct sheet name for this page
+const SHEET_NAME = SHEET_NAMES[currentPage] || 'western%20trees';  // Added fallback
+console.log('Final SHEET_NAME:', SHEET_NAME);
+
 let currentDescriptionIndex = 0;
 
 async function getTreeData(treeName) {
@@ -11,7 +28,7 @@ async function getTreeData(treeName) {
         const [searchNumber, searchTreeName] = treeName.split(': ');
         console.log('Searching for tree number:', searchNumber);
         
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/western%20trees?key=${API_KEY}`;
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
         const response = await fetch(url);
         
         if (!response.ok) {
@@ -124,7 +141,7 @@ async function updateTreePopup(treeName) {
 
 async function createTreeButtons() {
     try {
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/western%20trees?key=${API_KEY}`;
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
         const response = await fetch(url);
         
         if (!response.ok) {
@@ -147,7 +164,8 @@ async function createTreeButtons() {
             
             const buttonContainer = document.createElement('div');
             buttonContainer.style.position = 'absolute';
-            buttonContainer.style.top = `${posY}%`;
+            const topPosition = 100 - parseFloat(posY);
+            buttonContainer.style.top = `${topPosition}%`;
             buttonContainer.style.left = `${posX}%`;
 
             // Create button with current circular style
@@ -175,10 +193,10 @@ async function createTreeButtons() {
 
             // Add label for tree name
             const label = document.createElement('span');
-            label.textContent = treeName;
-            label.className = 'tree-label';  // Add this class for toggling visibility
+            label.textContent = `${treeNumber} ${treeName}`;  // Show both number and name
+            label.className = 'tree-label';
             label.style.cssText = `
-               position: absolute;
+                position: absolute;
                 left: 40px;
                 top: 30px;
                 font-family: 'Karla', sans-serif;
