@@ -90,7 +90,7 @@ function updateDescriptionDisplay(descriptions) {
     
     // Show current description with spacing after year
     const currentDesc = descriptions[currentDescriptionIndex];
-    descriptionElement.innerHTML = `${currentDesc.year}<br>${currentDesc.text}`;
+    descriptionElement.textContent = `${currentDesc.year}    ${currentDesc.text}`;
     
     // Update button visibility
     prevButton.style.visibility = currentDescriptionIndex < descriptions.length - 1 ? 'visible' : 'hidden';

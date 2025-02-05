@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" style="margin: 0; padding: 0; height: 100%; overflow: hidden;">
+<head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+</head>
+
+<body style="margin: 0; padding: 0; height: 100vh; overflow: hidden;">
+  <canvas id="myCanvas"></canvas>
+  
+  <div id="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; z-index: 1;">
+  </div>
+  
+  <div style="position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: flex-end; overflow: hidden; z-index: 2;">
+    <div style="position: relative; height: 100vh; width: auto;">
+      <img src="assets/farm home bg image.png" style="height: 100%; width: auto; object-fit: contain; object-position: bottom center;">
+      <!-- <button style="position: absolute; top: 20%; left: 35%; background-color: white; color: #B1BD0A; border: 2px solid #B1BD0A; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px; z-index: 3;">Hillside Orchard</button>  -->
+      <button style="position: absolute; top: 20%; left: 35%; background-color: white; color: #e1e1e1; border: 2px solid #d5d5d5; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px; z-index: 3;">Hillside Orchard</button>
+      <!-- <button style="position: absolute; top: 40%; left: 45%; background-color: white; color: #F35E5E; border: 2px solid #F35E5E; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px; z-index: 3;">Lower Orchard North</button> -->
+      <button style="position: absolute; top: 40%; left: 45%; background-color: white; color: #d9d9d9; border: 2px solid #cacaca; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px; z-index: 3;">Lower Orchard North</button>
+      <button id="plumAlleyBtn" style="position: absolute; top: 60%; left: 5%; background-color: white; color: #E358FF; border: 2px solid #E358FF; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px; z-index: 3;">Western Plum Alley</button>
+      <button id="lowerOrchardSouthBtn" style="position: absolute; top: 75%; left: 45%; background-color: white; color: #008856; border: 2px solid #008856; padding: 10px 20px; font-size: 20px; cursor: pointer; border-radius: 8px; z-index: 3;">Lower Orchard South</button>
+      
+      <div style="position: absolute; bottom: 1.5%; left: 50%; transform: translateX(-50%); display: flex; align-items: center; z-index: 3; white-space: nowrap;">
+        <img src="assets/tree icon gray.svg" style="width: 18px; height: 18px; margin-right: 40px;">
+        <p style="color: #696565; font-family: 'EB Garamond', serif; font-weight: 400; font-size: 25px; margin: 0;">Orchard Map</p>
+        <img src="assets/tree icon gray.svg" style="width: 18px; height: 18px; margin-left: 40px;">
+      </div>
+    </div>
+  </div>
+
+<script>
+    const plumAlleyBtn = document.getElementById('plumAlleyBtn');
+    plumAlleyBtn.addEventListener('click', (e) => {
+        window.location.href = "plum_alley.html";
+    });
+    const lowerOrchardSouthBtn = document.getElementById('lowerOrchardSouthBtn');
+    lowerOrchardSouthBtn.addEventListener('click', (e) => {
+        window.location.href = "lower_orchard_south.html";    
+    });
+</script>
+</body>
+</html>
