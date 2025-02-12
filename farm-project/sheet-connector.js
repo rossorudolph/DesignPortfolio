@@ -219,7 +219,7 @@ async function createTreeButtons() {
 }
 
 async function updateTreeDescription(treeNumber, year, description) {
-    const WEBAPP_URL = 'Yhttps://script.google.com/macros/s/AKfycbyrFuzALUp1BX83cYP0d7d3wgd8pUOG8TJ2nFWWW_f0qbOXbcF-nTQkdCoA1brdPWTDnA/exec';
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyrFuzALUp1BX83cYP0d7d3wgd8pUOG8TJ2nFWWW_f0qbOXbcF-nTQkdCoA1brdPWTDnA/exec';
     
     console.log('Attempting to update tree:', {
       sheetName: SHEET_NAME,
