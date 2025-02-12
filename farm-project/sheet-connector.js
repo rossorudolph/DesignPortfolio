@@ -219,10 +219,20 @@ async function createTreeButtons() {
 }
 
 async function updateTreeDescription(treeNumber, year, description) {
-    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyrFuzALUp1BX83cYP0d7d3wgd8pUOG8TJ2nFWWW_f0qbOXbcF-nTQkdCoA1brdPWTDnA/exec';
+    const WEBAPP_URL = 'Yhttps://script.google.com/macros/s/AKfycbyrFuzALUp1BX83cYP0d7d3wgd8pUOG8TJ2nFWWW_f0qbOXbcF-nTQkdCoA1brdPWTDnA/exec';
+    
+    console.log('Attempting to update tree:', {
+      sheetName: SHEET_NAME,
+      treeNumber: treeNumber,
+      year: year,
+      description: description
+    });
     
     try {
-      const response = await fetch(WEBAPP_URL, {
+      console.log('Sending request to:', WEBAPP_URL);
+      
+      // First, create the request options
+      const requestOptions = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -233,9 +243,19 @@ async function updateTreeDescription(treeNumber, year, description) {
           year: year,
           description: description
         })
-      });
+      };
+  
+      // Make the request
+      const response = await fetch(WEBAPP_URL, requestOptions);
       
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      console.log('Response received:', response);
       const result = await response.json();
+      console.log('Parsed result:', result);
+      
       if (result.status === 'success') {
         console.log('Update successful');
         return true;
