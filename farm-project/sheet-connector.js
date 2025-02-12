@@ -230,59 +230,48 @@ async function updateTreeDescription(treeNumber, year, description) {
       description: description
     });
   
-    // Create a hidden form
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = WEBAPP_URL;
-    form.target = 'hidden-iframe';
-    form.style.display = 'none';
-  
-    // Add the data as hidden fields
-    const fields = {
-      sheetName: SHEET_NAME,
-      treeNumber: treeNumber,
-      year: year.toString(),
-      description: description
-    };
-  
-    Object.keys(fields).forEach(key => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = fields[key];
-      form.appendChild(input);
-    });
-  
-    // Create hidden iframe to receive response
-    const iframe = document.createElement('iframe');
-    iframe.name = 'hidden-iframe';
-    iframe.style.display = 'none';
-  
     return new Promise((resolve, reject) => {
-      iframe.onload = () => {
-        try {
-          console.log('Form submitted successfully');
-          document.body.removeChild(form);
-          document.body.removeChild(iframe);
-          resolve(true);
-        } catch (error) {
-          console.error('Error in form submission:', error);
+      const xhr = new XMLHttpRequest();
+      
+      // Convert data to URL encoded format
+      const data = new URLSearchParams({
+        sheetName: SHEET_NAME,
+        treeNumber: treeNumber,
+        year: year.toString(),
+        description: description
+      }).toString();
+  
+      xhr.open('POST', WEBAPP_URL);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            console.log('Response:', response);
+            if (response.status === 'success') {
+              console.log('Update successful');
+              resolve(true);
+            } else {
+              console.error('Update failed:', response.message);
+              resolve(false);
+            }
+          } catch (error) {
+            console.error('Error parsing response:', error);
+            resolve(false);
+          }
+        } else {
+          console.error('Request failed:', xhr.status);
           resolve(false);
         }
       };
   
-      iframe.onerror = () => {
-        console.error('Frame load error');
-        document.body.removeChild(form);
-        document.body.removeChild(iframe);
+      xhr.onerror = function() {
+        console.error('Request failed');
         resolve(false);
       };
   
-      // Add form and iframe to document
-      document.body.appendChild(form);
-      document.body.appendChild(iframe);
-  
-      // Submit the form
-      form.submit();
+      // Send the request
+      xhr.send(data);
     });
   }
