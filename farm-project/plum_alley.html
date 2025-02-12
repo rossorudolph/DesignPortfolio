@@ -149,6 +149,17 @@
         </div>
     </div>
     <button id="closeOverlayButton">&times;</button>
+    
+    <div class="update-form" style="margin-top: 20px; width: 100%;">
+        <textarea 
+          id="newDescription" 
+          placeholder="Enter new update..." 
+          style="width: 100%; padding: 10px; margin-bottom: 10px; font-family: 'Karla', sans-serif;"
+        ></textarea>
+        <button 
+          id="submitUpdate" 
+          style="background-color: #1C4E24; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Submit Update</button>
+      </div>
 </div>
 
 <!-- script section  -->
@@ -214,6 +225,29 @@
                 });
             }
         });
+    });
+
+    document.getElementById('submitUpdate').addEventListener('click', async function() {
+    const description = document.getElementById('newDescription').value;
+    if (!description) {
+        alert('Please enter an update');
+        return;
+    }
+    
+    const treeNumber = document.querySelector('#treeNumber').textContent;
+    const currentYear = new Date().getFullYear();
+    
+    const success = await updateTreeDescription(treeNumber, currentYear, description);
+    
+    if (success) {
+        alert('Update successful!');
+        // Refresh the tree data display
+        const treeName = document.querySelector('.treeButton.selected').getAttribute('data-tree-name');
+        await updateTreePopup(treeName);
+        document.getElementById('newDescription').value = '';
+    } else {
+        alert('Update failed. Please try again.');
+    }
     });
 </script>
 </body>
