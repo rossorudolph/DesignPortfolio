@@ -221,50 +221,62 @@ async function createTreeButtons() {
 async function updateTreeDescription(treeNumber, year, description) {
     const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyrFuzALUp1BX83cYP0d7d3wgd8pUOG8TJ2nFWWW_f0qbOXbcF-nTQkdCoA1brdPWTDnA/exec';
     
-    console.log('Attempting to update tree:', {
-      sheetName: SHEET_NAME,
-      treeNumber: treeNumber,
-      year: year,
-      description: description
-    });
-    
-    try {
-      console.log('Sending request to:', WEBAPP_URL);
-      
-      // First, create the request options
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+    return new Promise((resolve, reject) => {
+      try {
+        console.log('Attempting to update tree:', {
           sheetName: SHEET_NAME,
           treeNumber: treeNumber,
           year: year,
           description: description
-        })
-      };
-  
-      // Make the request
-      const response = await fetch(WEBAPP_URL, requestOptions);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        });
+        
+        // Create a unique callback name
+        const callbackName = 'callback_' + Math.random().toString(36).substr(2, 9);
+        
+        // Create the script element
+        const script = document.createElement('script');
+        const payload = {
+          sheetName: SHEET_NAME,
+          treeNumber: treeNumber,
+          year: year,
+          description: description
+        };
+        
+        // Add the callback function to window
+        window[callbackName] = function(response) {
+          // Clean up
+          document.body.removeChild(script);
+          delete window[callbackName];
+          
+          console.log('Response received:', response);
+          
+          if (response.status === 'success') {
+            console.log('Update successful');
+            resolve(true);
+          } else {
+            console.error('Update failed:', response.message);
+            resolve(false);
+          }
+        };
+        
+        // Create the URL with parameters
+        const url = `${WEBAPP_URL}?callback=${callbackName}&payload=${encodeURIComponent(JSON.stringify(payload))}`;
+        script.src = url;
+        
+        // Handle errors
+        script.onerror = () => {
+          document.body.removeChild(script);
+          delete window[callbackName];
+          console.error('Script load error');
+          resolve(false);
+        };
+        
+        // Add the script to the page
+        document.body.appendChild(script);
+        
+      } catch (error) {
+        console.error('Error updating tree description:', error);
+        resolve(false);
       }
-      
-      console.log('Response received:', response);
-      const result = await response.json();
-      console.log('Parsed result:', result);
-      
-      if (result.status === 'success') {
-        console.log('Update successful');
-        return true;
-      } else {
-        console.error('Update failed:', result.message);
-        return false;
-      }
-    } catch (error) {
-      console.error('Error updating tree description:', error);
-      return false;
-    }
+    });
   }
