@@ -55,6 +55,23 @@ canvas {
   justify-content: space-between;
 }
 
+.bodycontainer2 {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  left: 5%;
+  top: 5%;
+  width: 80%;
+  padding: 5%;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.75);
+  z-index: 10;
+  box-shadow: 0 0 10px #FFFFFF;
+  overflow: hidden; /* Disable scrolling */
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
 .centered-container {
   display: flex;
   flex-direction: column; /* Stack elements vertically */
