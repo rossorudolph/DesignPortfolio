@@ -210,6 +210,10 @@ canvas {
   box-shadow: 0 0 10px #FFFFFF;
 }
 
+#ldBtn {
+  color: #5835d6;
+  box-shadow: 0 0 10px #FFFFFF;
+}
 .btn:hover {
   transform: scale(1.05);
 }
