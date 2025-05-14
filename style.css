@@ -57,20 +57,20 @@ canvas {
 
 .bodycontainer2 {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column; /* Stack items vertically */
   position: relative;
   left: 5%;
   top: 5%;
   width: 80%;
   padding: 5%;
-  text-align: left;
+  text-align: left; /* Ensure text is left justified */
   background-color: rgba(255, 255, 255, 0.75);
   z-index: 10;
   box-shadow: 0 0 10px #FFFFFF;
   overflow: visible; /* Allow content to overflow */
   height: auto; /* Allow container to expand vertically */
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: flex-start; /* Align items to the left */
+  justify-content: flex-start; /* Align items at the top */
 }
 
 .centered-container {
