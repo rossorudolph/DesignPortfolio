@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+</head>
+<body>
+<script>
+var mic, osc;
+var analyzer;
+var numSamples = 1024;
+var samples = [];
+var spectrum = [];
+var currentSource = "mic";
+
+// Instantaneous pattern rendering
+var visualMode = 0;
+var modeNames = [
+  'Radial Waveform', 
+  'Lissajous Scale', 
+  'Frequency Curves', 
+  'Spectral Flow',
+  'Dual Channel',
+  'Amplitude Burst'
+];
+
+// Audio analysis
+var rms = 0; // Root mean square for overall amplitude
+var peak = 0;
+var bassEnergy = 0, midEnergy = 0, highEnergy = 0;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  colorMode(HSB, 360, 100, 100, 100);
+  
+  analyzer = new p5.FFT(0.9, numSamples);
+  
+  // Set up audio
+  mic = new p5.AudioIn();
+  osc = new p5.Oscillator();
+  osc.amp(0.3);
+  osc.freq(220);
+  
+  mic.start();
+  analyzer.setInput(mic);
+}
+
+function draw() {
+  background(0);
+  
+  // Get audio data
+  samples = analyzer.waveform();
+  spectrum = analyzer.analyze();
+  
+  // Calculate amplitude for scaling
+  analyzeAmplitude();
+  
+  // Calculate scale factor - this is the key!
+  let scale = rms * 800 + peak * 400; // Dramatic scaling
+  
+  translate(width/2, height/2);
+  
+  // Render complete pattern instantly based on mode
+  switch(visualMode) {
+    case 0: drawRadialWaveform(scale); break;
+    case 1: drawLissajousScale(scale); break;
+    case 2: drawFrequencyCurves(scale); break;
+    case 3: drawSpectralFlow(scale); break;
+    case 4: drawDualChannel(scale); break;
+    case 5: drawAmplitudeBurst(scale); break;
+  }
+  
+  resetMatrix();
+  
+  // Handle oscillator control
+  if (currentSource !== 'mic') {
+    let freq = map(mouseX, 0, width, 50, 1000);
+    let amp = map(mouseY, height, 0, 0, 0.5);
+    osc.freq(freq, 0.01);
+    osc.amp(amp, 0.01);
+  }
+  
+  drawUI();
+}
+
+function analyzeAmplitude() {
+  // RMS (root mean square) for perceived loudness
+  let sum = 0;
+  for (let i = 0; i < samples.length; i++) {
+    sum += samples[i] * samples[i];
+  }
+  rms = sqrt(sum / samples.length);
+  
+  // Peak amplitude
+  peak = Math.max(...samples.map(s => Math.abs(s)));
+  
+  // Frequency bands
+  let bassRange = spectrum.slice(0, Math.floor(spectrum.length / 8));
+  let midRange = spectrum.slice(Math.floor(spectrum.length / 8), Math.floor(spectrum.length / 2));
+  let highRange = spectrum.slice(Math.floor(spectrum.length / 2));
+  
+  bassEnergy = bassRange.reduce((a, b) => a + b) / bassRange.length / 255;
+  midEnergy = midRange.reduce((a, b) => a + b) / midRange.length / 255;
+  highEnergy = highRange.reduce((a, b) => a + b) / highRange.length / 255;
+}
+
+function drawRadialWaveform(scale) {
+  strokeWeight(1 + scale * 0.01);
+  stroke(180, 70, 90, 80);
+  noFill();
+  
+  // Render entire waveform as radial pattern
+  beginShape();
+  for (let i = 0; i < samples.length; i++) {
+    let angle = map(i, 0, samples.length, 0, TWO_PI);
+    let radius = 20 + samples[i] * scale;
+    
+    let x = cos(angle) * radius;
+    let y = sin(angle) * radius;
+    vertex(x, y);
+  }
+  endShape(CLOSE);
+  
+  // Add frequency-based inner patterns
+  if (scale > 50) {
+    stroke(60, 90, 70, 60);
+    beginShape();
+    for (let i = 0; i < spectrum.length; i += 4) {
+      let angle = map(i, 0, spectrum.length, 0, TWO_PI);
+      let radius = (spectrum[i] / 255) * scale * 0.5;
+      
+      let x = cos(angle) * radius;
+      let y = sin(angle) * radius;
+      vertex(x, y);
+    }
+    endShape(CLOSE);
+  }
+}
+
+function drawLissajousScale(scale) {
+  stroke(300, 80, 80, 70);
+  strokeWeight(1 + scale * 0.008);
+  noFill();
+  
+  // Create Lissajous-like patterns from audio buffer
+  beginShape();
+  for (let i = 0; i < samples.length - 1; i++) {
+    let x = samples[i] * scale;
+    let y = samples[i + 1] * scale;
+    
+    // Add frequency modulation
+    if (i < spectrum.length) {
+      let freqMod = (spectrum[i] / 255) * scale * 0.3;
+      x += cos(i * 0.1) * freqMod;
+      y += sin(i * 0.1) * freqMod;
+    }
+    
+    vertex(x, y);
+  }
+  endShape();
+  
+  // Mirror for symmetry
+  if (scale > 30) {
+    beginShape();
+    for (let i = 0; i < samples.length - 1; i++) {
+      let x = -samples[i] * scale;
+      let y = -samples[i + 1] * scale;
+      vertex(x, y);
+    }
+    endShape();
+  }
+}
+
+function drawFrequencyCurves(scale) {
+  strokeWeight(0.5 + scale * 0.01);
+  noFill();
+  
+  // Render frequency spectrum as flowing curves
+  for (let layer = 0; layer < 3; layer++) {
+    let hue = map(layer, 0, 3, 120, 240);
+    stroke(hue, 80, 70, 50);
+    
+    beginShape();
+    for (let i = 0; i < spectrum.length; i++) {
+      let angle = map(i, 0, spectrum.length, 0, TWO_PI * (layer + 1));
+      let intensity = spectrum[i] / 255;
+      let radius = intensity * scale * (0.3 + layer * 0.3);
+      
+      let x = cos(angle) * radius;
+      let y = sin(angle) * radius;
+      
+      // Add waveform modulation
+      if (i < samples.length) {
+        let waveMod = samples[i] * scale * 0.2;
+        x += cos(angle + PI/2) * waveMod;
+        y += sin(angle + PI/2) * waveMod;
+      }
+      
+      vertex(x, y);
+    }
+    endShape();
+  }
+}
+
+function drawSpectralFlow(scale) {
+  stroke(200, 70, 80, 60);
+  strokeWeight(0.8 + scale * 0.005);
+  noFill();
+  
+  // Create flowing spectral patterns
+  let segments = 8;
+  for (let seg = 0; seg < segments; seg++) {
+    let startIdx = Math.floor((spectrum.length / segments) * seg);
+    let endIdx = Math.floor((spectrum.length / segments) * (seg + 1));
+    
+    beginShape();
+    for (let i = startIdx; i < endIdx; i++) {
+      let progress = map(i, startIdx, endIdx, 0, 1);
+      let intensity = spectrum[i] / 255;
+      
+      // Create flowing curves
+      let baseAngle = map(seg, 0, segments, 0, TWO_PI);
+      let flowAngle = baseAngle + progress * PI;
+      
+      let radius = intensity * scale;
+      let x = cos(flowAngle) * radius;
+      let y = sin(flowAngle) * radius;
+      
+      // Add harmonic distortion
+      x += cos(flowAngle * 3) * intensity * scale * 0.2;
+      y += sin(flowAngle * 3) * intensity * scale * 0.2;
+      
+      vertex(x, y);
+    }
+    endShape();
+  }
+}
+
+function drawDualChannel(scale) {
+  stroke(60, 90, 90, 70);
+  strokeWeight(1 + scale * 0.008);
+  noFill();
+  
+  // Simulate dual-channel audio (left/right or processed versions)
+  let halfLength = Math.floor(samples.length / 2);
+  
+  beginShape();
+  for (let i = 0; i < halfLength; i++) {
+    let x = samples[i] * scale;
+    let y = samples[i + halfLength] * scale;
+    
+    // Add frequency-based modulation
+    if (i < spectrum.length) {
+      let freqMod = (spectrum[i] / 255) * scale * 0.4;
+      x += cos(i * 0.05) * freqMod;
+      y += sin(i * 0.05) * freqMod;
+    }
+    
+    vertex(x, y);
+  }
+  endShape();
+  
+  // Cross pattern for high amplitudes
+  if (scale > 100) {
+    stroke(60, 90, 90, 40);
+    strokeWeight(scale * 0.02);
+    line(-scale, 0, scale, 0);
+    line(0, -scale, 0, scale);
+  }
+}
+
+function drawAmplitudeBurst(scale) {
+  strokeWeight(0.5 + scale * 0.01);
+  noFill();
+  
+  // Burst pattern based on amplitude
+  let numRays = Math.floor(32 + scale * 0.1);
+  let angleStep = TWO_PI / numRays;
+  
+  for (let i = 0; i < numRays; i++) {
+    let angle = i * angleStep;
+    
+    // Get corresponding frequency bin
+    let freqIdx = Math.floor(map(i, 0, numRays, 0, spectrum.length));
+    let intensity = spectrum[freqIdx] / 255;
+    
+    if (intensity > 0.1) {
+      let length = intensity * scale;
+      let hue = map(intensity, 0, 1, 240, 60);
+      stroke(hue, 80, intensity * 60 + 40, 60);
+      
+      // Create organic rays
+      let segments = Math.floor(length / 10) + 1;
+      let prevX = 0, prevY = 0;
+      
+      for (let seg = 0; seg < segments; seg++) {
+        let progress = seg / segments;
+        let segLength = length * progress;
+        
+        // Add noise for organic feel
+        let noiseAmt = intensity * scale * 0.1;
+        let x = cos(angle) * segLength + (noise(i, seg, frameCount * 0.01) - 0.5) * noiseAmt;
+        let y = sin(angle) * segLength + (noise(i + 100, seg, frameCount * 0.01) - 0.5) * noiseAmt;
+        
+        if (seg > 0) {
+          line(prevX, prevY, x, y);
+        }
+        prevX = x;
+        prevY = y;
+      }
+    }
+  }
+}
+
+function drawUI() {
+  fill(0, 0, 100, 80);
+  noStroke();
+  
+  text('T: Audio Source | M: Visual Mode', 20, 20);
+  text('Source: ' + currentSource, 20, 40);
+  text('Mode: ' + modeNames[visualMode], 20, 60);
+  text('RMS: ' + nf(rms, 1, 3) + ' Peak: ' + nf(peak, 1, 3), 20, 80);
+  text('Energy - Bass: ' + nf(bassEnergy, 1, 2) + ' Mid: ' + nf(midEnergy, 1, 2) + ' High: ' + nf(highEnergy, 1, 2), 20, 100);
+  
+  if (currentSource !== 'mic') {
+    text('Mouse: Control oscillator frequency/amplitude', 20, 120);
+  }
+}
+
+function keyPressed() {
+  switch(key.toLowerCase()) {
+    case 't':
+      toggleInput();
+      break;
+    case 'm':
+      visualMode = (visualMode + 1) % modeNames.length;
+      break;
+  }
+}
+
+// Input toggling
+var inputMode = 0;
+
+function toggleInput() {
+  inputMode = (inputMode + 1) % 5;
+  
+  switch (inputMode) {
+    case 0:
+      osc.stop();
+      mic.start();
+      analyzer.setInput(mic);
+      currentSource = 'mic';
+      break;
+    case 1:
+      osc.setType('sine');
+      osc.start();
+      mic.stop();
+      analyzer.setInput(osc);
+      currentSource = 'sine';
+      break;
+    case 2:
+      osc.setType('triangle');
+      currentSource = 'triangle';
+      break;
+    case 3:
+      osc.setType('square');
+      currentSource = 'square';
+      break;
+    case 4:
+      osc.setType('sawtooth');
+      currentSource = 'sawtooth';
+      break;
+  }
+}
+</script>
+</body>
+</html>
