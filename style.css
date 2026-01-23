@@ -1,5 +1,3 @@
-
-
 html, body {
   height: 100%;
   margin: 0;
@@ -28,9 +26,10 @@ canvas {
 
 #overlay {
   position: absolute;
-  top: 25%;
-  width: 100%;
-  text-align: center;
+  top: 80px;
+  left: 60px;
+  width: auto;
+  text-align: left;
   color: #434343;
   z-index: 10;
 }
@@ -157,14 +156,13 @@ canvas {
 }
 
 .top-header-container {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0;
+  margin-bottom: 10px;
   z-index: 20; /* Ensure it's above other content */
   font-family: "EB Garamond", serif;
   font-optical-sizing: auto;
@@ -173,6 +171,15 @@ canvas {
   font-weight: 300;
   font-size: 20px; /* Adjust size as needed */
   /*color: #434343;*/
+}
+
+/* Fixed header for project pages that use content-wrapper */
+.content-wrapper .top-header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 80px 0 0 60px;
+  margin-bottom: 0;
 }
 
 .separator {
@@ -201,45 +208,49 @@ canvas {
   overflow-y: scroll;
 }
 
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 0 0px;
-  border-radius: 20px;
-  background-color: #FFFFFF;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  transition: all 0.3s ease;
-  width: 250px;
-  font-family: "Karla", sans-serif;
-  font-optical-sizing: auto;
+/* Simple text link styling instead of buttons */
+.nav-link {
+  display: block;
+  margin: 8px 0;
+  color: #434343;
+  text-decoration: underline;
+  font-size: 16px;
   font-weight: 300;
- }
-
-#designBtn {
-  color: #73CDA2;
-  box-shadow: 0 0 10px #FFFFFF;
-  /*#73CDA2 and #F3A8D2*/
+  font-family: "Karla", sans-serif;
+  transition: color 0.3s ease;
+  cursor: pointer;
 }
 
-#artBtn {
-  color: #F3A8D2;
-  box-shadow: 0 0 10px #FFFFFF;
+.nav-link:hover {
+  color: #696969;
 }
 
-#ldBtn {
-  color: #5835d6;
-  box-shadow: 0 0 10px #FFFFFF;
+.nav-section {
+  margin-bottom: 30px;
 }
-.btn:hover {
-  transform: scale(1.05);
+
+.section-title {
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 8px;
+  margin-top: 0;
+  color: #434343;
+  font-family: "Karla", sans-serif;
 }
 
 .about-link {
-  margin-top: 20px;
+  display: block;
+  margin: 8px 0;
   color: #696969;
   text-decoration: underline;
+  font-size: 16px;
+  font-weight: 300;
+  font-family: "Karla", sans-serif;
+  transition: color 0.3s ease;
+}
+
+.about-link:hover {
+  color: #434343;
 }
 
 .headerBtn {
@@ -265,6 +276,10 @@ canvas {
 
 .separator, .current-page {
   color: #696969;
+}
+
+.content-wrapper {
+  padding-top: 110px;
 }
 
 .video-container {
@@ -320,6 +335,7 @@ h2{
   font-weight: 150;
   font-style: normal;
   color: #232323;
+  white-space: nowrap;
 }
 
 h3{
