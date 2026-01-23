@@ -10,62 +10,35 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
    <link rel="icon" type="image/svg+xml" href="favicon r.svg">
-
 </head>
-
 <body>
     <canvas id="myCanvas"></canvas>
     <div id="overlay">
- 
-  <div class="top-header-container">
-    <a href="./index.html" id="headerBtn" class="headerBtn">Ross Rudolph</a>
-  </div>
-
-        <br> <br> <br> <br> 
-        <button id="designBtn" class="btn">Product Design Case Studies</button>
-        <br> <br>
-        <button id="artBtn" class="btn">God Image Installation</button>
-         <br> <br>
-         <button id="ldBtn" class="btn">Landscape Design</button>
-         <br> <br> <br>
-         <a href="horticulturework.html" class="about-link">Horticulture Experience</a>
+          <div class="top-header-container">
+                <a href="./index.html" id="headerBtn" class="headerBtn">Ross Rudolph</a>
+            </div>
+            
+        <div class="nav-section">
+            <br>
+            <div class="section-title">Art Installations</div>
+            <a href="art.html" class="nav-link">God Image</a>
+            <a href="trance-decay/index.html" class="nav-link">Trance Decay</a>
+        </div>
+        
+        <div class="nav-section">
+            <div class="section-title">Horticulture</div>
+            <a href="horticulturework.html" class="nav-link">Terrarium Builds</a>
+            <a href="landscapedesignwork.html" class="nav-link">Landscape Design</a>
+            <a href="farm-project/farmhome.html" class="nav-link">Alemany Farm Orchard Map</a>
+        </div>
+        
+        <a href="https://rossorudolph.wixsite.com/ross-rudolph-design" class="nav-link">Product Design Work</a>
+        
         <br>
-        <a href="farm-project/farmhome.html" class="about-link">Alemany Orchard Map (for mobile)</a>
-        <br>
-      <a href="trance-decay/index.html" class="about-link">trance-decay demo</a>
-      <br>
         <a href="aboutme.html" class="about-link">about me</a>
     </div>
     <script src="background-sketch.js"></script>
     <script>
-    const designBtn = document.getElementById('designBtn');
-    const artBtn = document.getElementById('artBtn');
-    const ldBtn = document.getElementById('ldBtn');
-
-    //&#128274; for lock emoji
-/*    designBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const password = prompt("Please enter the password:");
-        if (password === "asabovesobelow") {
-            window.location.href = "design.html";
-        } else {
-            alert("Incorrect password");
-        }
-    });
-*/
-    
-    designBtn.addEventListener('click', (e) => {
-        window.location.href = "https://rossorudolph.wixsite.com/ross-rudolph-design";
-    });
-
-    artBtn.addEventListener('click', (e) => {
-        window.location.href = "art.html";
-    });
-
-    ldBtn.addEventListener('click', (e) => {
-        window.location.href = "landscapedesignwork.html";
-    });
-
     resizeCanvas();
     draw();
     </script>
