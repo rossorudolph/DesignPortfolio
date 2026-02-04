@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/addons/p5.sound.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        #speech {
+            position: fixed;
+            top: 30%; /* sit above the visualization */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            pointer-events: none;
+            color: white;
+            text-align: center;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            max-width: 80vw;
+        }
+        #topics {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            pointer-events: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+            text-align: right;
+            max-width: 150px;
+        }
+        .topic {
+            margin: 8px 0;
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            display: inline-block;
+        }
+        main {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <main></main>
+    <div id="speech"></div>
+    <div id="topics"></div>
+
+    <script>
+        let mic;
+        let fft;
+        let r = 10;
+        let recognition;
+        let lines = ['', '', '', ''];
+        let topics = new Set();
+        let topicCounts = {};
+
+        function setup() {
+            let mainEl = document.querySelector('main');
+            let cnv = createCanvas(windowWidth, windowHeight);
+            if (mainEl) {
+                cnv.parent(mainEl);
+            }
+
+            mic = new p5.AudioIn();
+            mic.start(() => {
+                fft = new p5.FFT(0.8, 64);
+                fft.setInput(mic);
+            });
+
+            // Use Web Speech API directly
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                recognition.onresult = gotSpeech;
+                recognition.start();
+            }
+        }
+
+        function detectTopics(text) {
+            // Simple topic detection - look for common nouns/subjects
+            const words = text.toLowerCase().split(/\s+/);
+            const commonTopics = [
+                'art', 'design', 'music', 'technology', 'science', 'nature', 'work', 'project',
+                'idea', 'concept', 'color', 'shape', 'form', 'space', 'time', 'life', 'world',
+                'people', 'person', 'friend', 'family', 'home', 'place', 'thing', 'way', 'day',
+                'experience', 'feeling', 'thought', 'question', 'answer', 'problem', 'solution',
+                'future', 'past', 'present', 'moment', 'story', 'history', 'culture', 'society'
+            ];
+            
+            for (let word of words) {
+                // Remove punctuation
+                word = word.replace(/[.,!?;:]/g, '');
+                if (word.length > 3 && commonTopics.includes(word)) {
+                    if (!topicCounts[word]) {
+                        topicCounts[word] = 0;
+                    }
+                    topicCounts[word]++;
+                    topics.add(word);
+                }
+            }
+            
+            // Update topics display
+            updateTopicsDisplay();
+        }
+        
+        function updateTopicsDisplay() {
+            let topicsEl = select('#topics');
+            if (!topicsEl) return;
+            
+            // Sort topics by frequency
+            let sortedTopics = Array.from(topics).sort((a, b) => {
+                return (topicCounts[b] || 0) - (topicCounts[a] || 0);
+            }).slice(0, 5); // Show top 5
+            
+            if (sortedTopics.length === 0) {
+                topicsEl.html('');
+                return;
+            }
+            
+            let topicsStr = sortedTopics.map(topic => 
+                `<div class="topic">${topic}</div>`
+            ).join('');
+            topicsEl.html(topicsStr);
+        }
+
+        function gotSpeech(event) {
+            if (event.results.length > 0) {
+                let said = event.results[event.results.length - 1][0].transcript;
+                let output = select('#speech');
+
+                // Detect topics
+                detectTopics(said);
+
+                for (let i = lines.length - 1; i > 0; i--) {
+                    lines[i] = lines[i - 1];
+                }
+                lines[0] = said;
+                let outputStr = '';
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i] !== '') {
+                        let opacity = 1 - i * 0.25;
+                        outputStr = `<span style="opacity: ${opacity.toFixed(2)};">${lines[i]}</span><br>` + outputStr;
+                    }
+                }
+                output.html(outputStr);
+            }
+        }
+
+        function draw() {
+            background(0);
+
+            if (!fft) return;
+
+            let spectrum = fft.analyze();
+            noStroke();
+
+            for (let i = 0; i < spectrum.length; i++) {
+                let x = map(i, 0, spectrum.length, 0, width / 2);
+                let h = -height + map(spectrum[i], 0, 255, height, 0);
+
+                let amp = spectrum[i] / 255.0;
+                if (amp < 0.02) continue; // skip near-silence to avoid horizontal line
+
+                let brightness = map(spectrum[i], 0, 255, 80, 255);
+                // use alpha so dots fade out as amplitude drops
+                fill(80, 120, 255, amp * 255);
+
+                ellipse(x / 4 + width / 2, h / 4 + height / 2, r, r);
+                ellipse(-x / 4 + width / 2, h / 4 + height / 2, r, r);
+                ellipse(x / 4 + width / 2, -h / 4 + height / 2, r, r);
+                ellipse(-x / 4 + width / 2, -h / 4 + height / 2, r, r);
+            }
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+    </script>
+</body>
+</html>

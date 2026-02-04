@@ -8,38 +8,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gantari:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon r.svg">
 </head>
-<body>
+<body class="project-page">
     <canvas id="myCanvas"></canvas>
-    <div class="content-wrapper">
-        <div class="top-header-container">
-            <a href="./index.html" id="headerBtn" class="headerBtn">Ross Rudolph</a>
-            <span class="separator">&nbsp &nbsp;&gt;&nbsp &nbsp;</span>
-            <span class="current-page">Landscape Design</span>
-        </div>
-    </div>
-
-
-        <div class="bodycontainer2" style="background-color: #EBF0E5;">
+    <div id="overlay">
+        <canvas id="cursorCanvas" aria-hidden="true"></canvas>
+        <a href="index.html" class="project-back">Ross Rudolph</a>
+        <div class="content-wrapper project-content">
+        <div class="bodycontainer2">
          <div class="video-container">
           <img src="assets/sf plant palette 1.png" style="width: 100%;">
         </div>
         <p style="display: block; text-align: left; font-weight: bold; margin-bottom: 0;">Plant Palette 1</p>
         <p style="display: block; text-align: left;margin-top: 0;">Regenerative, Coastal, Soft-scape</p>
-        </p>
       </div>
 
-        <div class="bodycontainer2" style="background-color: #EBF0E5;">
+        <div class="bodycontainer2">
             <div class="video-container" style="display: flex; justify-content: center; align-items: center;">
              <img src="assets/Patricia's Frontyard Design.png" style="width: 100%; height: auto; object-fit: contain;">
            </div>
            <p style="display: block; text-align: left; font-weight: bold; margin-bottom: 0;">Ingleside Yard Design for Patricia</p>
            <p style="display: block; text-align: left;margin-top: 0;">Herb spiral, Privacy, Vietnamese</p>
-           </p>
-        </p>
       </div>
 
-      <div class="bodycontainer2" style="background-color: #EBF0E5;">
+      <div class="bodycontainer2">
         <div class="video-container" style="display: flex; justify-content: center; align-items: center;">
          <img src="assets/sf backyard free design 1.png" style="width: 100%; height: auto; object-fit: contain;">
        </div>
@@ -48,10 +42,10 @@
       </div>
        <p style="display: block; text-align: left; font-weight: bold; margin-bottom: 0;">Free Design for SF Yard</p>
        <p style="display: block; text-align: left;margin-top: 0;">Native, Japanese, and Agriculture Influence</p>
-       </p>
-    </p>
   </div>
 
-    <script src="background-sketch.js"></script>
+        </div>
+    </div>
+    <script src="psychedelic-landscape-sketch.js"></script>
 </body>
 </html>
