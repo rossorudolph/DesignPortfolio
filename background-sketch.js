@@ -64,7 +64,7 @@ class Circle {
         display() {
             for (let d = this.radius + this.feather; d > this.radius; d -= 2) {
                 let inter = (d - this.radius) / this.feather;
-                let alpha = Math.floor((1 - inter) * 50);
+                let alpha = Math.floor((1 - inter) * 20);
                 ctx.fillStyle = `rgba(233, 233, 233, ${alpha / 100})`; /* 213 */
                 ctx.beginPath();
                 ctx.ellipse(this.x, this.y, d, d, 0, 0, Math.PI * 2);

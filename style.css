@@ -59,8 +59,8 @@ canvas {
   min-width: 30ch;
   max-height: calc(100vh - 80px);
   padding: 2rem 2.25rem;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1.5px solid #000;
+  background: rgba(13, 37, 22, 0.28);
+  border: none;
   border-radius: 35px;
   z-index: 20;
   pointer-events: auto;
@@ -73,7 +73,7 @@ canvas {
   font-weight: 400;
   font-size: 1.15rem;
   line-height: 1.7;
-  color: #1a1a1a;
+  color: #888888;
   text-align: justify;
   word-break: normal;
   overflow-wrap: normal;
@@ -85,17 +85,17 @@ canvas {
 }
 
 .bio-link {
-  color: #1a1a1a;
-  text-decoration: none;
-  background: #90FF92;
+  color: #888888;
+  text-decoration: underline;
+  background: rgba(255, 255, 255, 0.06);
   padding: 0 3px;
   transition: background 0.2s ease, color 0.2s ease;
   pointer-events: auto;
 }
 
 .bio-link:hover {
-  background: #6fe671;
-  color: #000;
+  background: rgba(255, 255, 255, 0.12);
+  color: #a5a5a5;
 }
 
 /* Wall piece button: half size, square, no stroke, bottom-left */
@@ -180,6 +180,35 @@ canvas {
 
 .project-page .top-header-container {
   display: none;
+}
+
+/* Dark green + gray type variant for selected project pages */
+.project-page.dark-moss-theme #overlay {
+  color: #888888;
+}
+
+.project-page.dark-moss-theme .project-back {
+  color: #888888;
+}
+
+.project-page.dark-moss-theme .project-back:hover {
+  color: #a0a0a0;
+}
+
+.project-page.dark-moss-theme .bodycontainer,
+.project-page.dark-moss-theme .bodycontainer2,
+.project-page.dark-moss-theme .project-card {
+  background: rgba(13, 37, 22, 0.72);
+  border: 1px solid rgba(136, 136, 136, 0.55);
+  box-shadow: none;
+}
+
+.project-page.dark-moss-theme p,
+.project-page.dark-moss-theme h2,
+.project-page.dark-moss-theme h3,
+.project-page.dark-moss-theme h4,
+.project-page.dark-moss-theme h5 {
+  color: #888888;
 }
 
 .project-page,
