@@ -171,16 +171,19 @@ if (!canvas) {
                     .addScaledVector(primaryDir, 0.55)
                     .addScaledVector(UP, -0.05)
                     .normalize();
-                const secLen = primaryLen * (0.2 + Math.random() * 0.1) * (1 - t * 0.62);
+                const secLen = primaryLen * (0.16 + Math.random() * 0.08) * (1 - t * 0.62);
                 const secMat = leafMats[(i + s + 1) % leafMats.length];
                 const secEnd = new THREE.Vector3().copy(sp).addScaledVector(secDir, secLen);
                 const secR0 = Math.max(primaryR0 * (1 - st * 0.3), 0.0004 * scale);
                 const secR1 = THREE.MathUtils.lerp(secR0, 0.00006 * scale, taperEase(1));
-                addTaperedSegment(pivot, sp, secEnd, secR0, secR1, secMat);
+                const secMid = new THREE.Vector3().copy(sp).lerp(secEnd, 0.8);
+                const secRMid = Math.max(secR0 * 0.82, 0.00018 * scale);
+                addTaperedSegment(pivot, sp, secMid, secR0, secRMid, secMat);
+                addTaperedSegment(pivot, secMid, secEnd, secRMid, secR1, secMat);
 
                 const tiny = new THREE.Mesh(tinyLeafGeo, secMat);
                 tiny.position.copy(sp).lerp(secEnd, 0.58);
-                tiny.scale.set(1, (secLen * 0.8) / 0.026, 1);
+                tiny.scale.set(1, (secLen * 0.95) / 0.026, 1);
                 tiny.quaternion.setFromUnitVectors(UP, secDir);
                 tiny.castShadow = true;
                 pivot.add(tiny);
@@ -344,12 +347,13 @@ if (!canvas) {
             const needle = new THREE.Mesh(needleGeo, needleMat);
             needle.position.set(nx, h, nz);
             const dir = new THREE.Vector3(
-                nx * 0.5,
-                0.008 * scale + Math.random() * 0.02 * scale,
-                nz * 0.5
+                nx * 0.56,
+                0.006 * scale + Math.random() * 0.016 * scale,
+                nz * 0.56
             ).normalize();
             needle.quaternion.setFromUnitVectors(UP, dir);
-            needle.rotateX(-0.42 + (Math.random() - 0.5) * 0.2);
+            needle.rotateX((Math.random() - 0.5) * 0.5);
+            needle.rotateZ((Math.random() - 0.5) * 0.38);
             needle.castShadow = true;
             clump.add(needle);
         }
@@ -358,7 +362,7 @@ if (!canvas) {
     }
 
     function createLeucobryumPatch(cx, cz, scale) {
-        const clumps = 5 + Math.floor(Math.random() * 3);
+        const clumps = 7 + Math.floor(Math.random() * 3);
         for (let i = 0; i < clumps; i++) {
             const a = (i / clumps) * Math.PI * 2 + Math.random() * 1.2;
             const r = (0.022 + Math.random() * 0.028) * scale;
@@ -373,11 +377,12 @@ if (!canvas) {
     function createMoth() {
         const g = new THREE.Group();
         const wingMat = new THREE.MeshBasicMaterial({
-            color: 0xb5b3af,
+            color: 0xe1ded6,
             transparent: true,
-            opacity: 0.54,
+            opacity: 0.9,
             side: THREE.DoubleSide,
             depthWrite: false,
+            depthTest: false,
         });
         function ovalWing(rx, ry) {
             const s = new THREE.Shape();
@@ -411,15 +416,12 @@ if (!canvas) {
         rightWing.add(lowerR);
         g.add(leftWing);
         g.add(rightWing);
+        g.renderOrder = 999;
 
-        const bodyGeo = new THREE.SphereGeometry(0.001, 8, 8);
-        const bodyMat = new THREE.MeshBasicMaterial({ color: 0x9a9894, transparent: true, opacity: 0.08 });
-        const body = new THREE.Mesh(bodyGeo, bodyMat);
-        g.add(body);
         g.rotation.set(0.05, 0.12, 0.03);
-        g.scale.set(2.8, 2.8, 2.8);
+        g.scale.set(4.6, 4.6, 4.6);
 
-        g.position.set(0.18, 0.32, 0.22);
+        g.position.set(0.04, 0.42, 0.34);
         scene.add(g);
 
         moth = {
@@ -505,6 +507,7 @@ if (!canvas) {
 
         createLeucobryumPatch(-0.52, 0.28, 0.8);
         createLeucobryumPatch(0.56, -0.32, 0.75);
+        createLeucobryumPatch(0.22, 0.12, 0.66);
     }
 
     function initScene() {
@@ -640,15 +643,16 @@ if (!canvas) {
             const targetY = (frond.homeY ?? -0.004) - collapseY;
             frond.pivot.position.y += (targetY - frond.pivot.position.y) * 0.15;
             const flatScale = 1 - frond.collapse * 0.92;
-            if (frond.collapsed && frond.collapse > 0.85) {
+            if (frond.collapsed) {
                 frond.pivot.traverse((o) => {
                     if (o.material) {
                         if (!o.userData.origOpacity) o.userData.origOpacity = o.material.opacity !== undefined ? o.material.opacity : 1;
                         if (o.material.color && !o.userData.origColor) o.userData.origColor = o.material.color.clone();
                         o.material.transparent = true;
-                        o.material.opacity = Math.max(0.3, 1 - frond.collapse * 0.92);
+                        o.material.opacity = Math.max(0.32, 1 - frond.collapse * 0.76);
                         if (o.material.color && o.userData.origColor) {
-                            o.material.color.copy(o.userData.origColor).lerp(DEAD_FROND_COLOR, Math.min(1, frond.collapse * 1.2));
+                            const colorFade = Math.min(1, Math.pow(frond.collapse, 1.25));
+                            o.material.color.copy(o.userData.origColor).lerp(DEAD_FROND_COLOR, colorFade);
                         }
                     }
                 });
@@ -678,9 +682,9 @@ if (!canvas) {
 
         if (moth) {
             mothTarget.set(
-                0.16 + Math.sin(time * 0.34 + moth.phase) * 0.22 + Math.sin(time * 0.14 + moth.phase * 0.6) * 0.08,
-                0.34 + Math.sin(time * 0.46 + moth.phase * 0.7) * 0.08,
-                0.12 + Math.cos(time * 0.3 + moth.phase * 1.2) * 0.16
+                0.02 + Math.sin(time * 0.34 + moth.phase) * 0.16 + Math.sin(time * 0.14 + moth.phase * 0.6) * 0.06,
+                0.41 + Math.sin(time * 0.46 + moth.phase * 0.7) * 0.07,
+                0.32 + Math.cos(time * 0.3 + moth.phase * 1.2) * 0.08
             );
 
             const desired = new THREE.Vector3().subVectors(mothTarget, moth.group.position);
