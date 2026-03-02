@@ -419,9 +419,9 @@ if (!canvas) {
         g.renderOrder = 999;
 
         g.rotation.set(0.05, 0.12, 0.03);
-        g.scale.set(4.6, 4.6, 4.6);
+        g.scale.set(0.92, 0.92, 0.92);
 
-        g.position.set(0.04, 0.42, 0.34);
+        g.position.set(0.72, 0.18, -0.02);
         scene.add(g);
 
         moth = {
@@ -682,9 +682,9 @@ if (!canvas) {
 
         if (moth) {
             mothTarget.set(
-                0.02 + Math.sin(time * 0.34 + moth.phase) * 0.16 + Math.sin(time * 0.14 + moth.phase * 0.6) * 0.06,
-                0.41 + Math.sin(time * 0.46 + moth.phase * 0.7) * 0.07,
-                0.32 + Math.cos(time * 0.3 + moth.phase * 1.2) * 0.08
+                0.72 + Math.sin(time * 0.34 + moth.phase) * 0.22 + Math.sin(time * 0.14 + moth.phase * 0.6) * 0.08,
+                0.18 + Math.sin(time * 0.46 + moth.phase * 0.7) * 0.05,
+                -0.02 + Math.cos(time * 0.3 + moth.phase * 1.2) * 0.14
             );
 
             const desired = new THREE.Vector3().subVectors(mothTarget, moth.group.position);
