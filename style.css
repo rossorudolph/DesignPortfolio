@@ -78,7 +78,7 @@ canvas {
   font-weight: 400;
   font-size: 1.15rem;
   line-height: 1.7;
-  color: #888888;
+  color: #a0a0a0;
   text-align: justify;
   word-break: normal;
   overflow-wrap: normal;
@@ -90,16 +90,16 @@ canvas {
 }
 
 .bio-link {
-  color: #888888;
+  color: #a0a0a0;
   text-decoration: underline;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.181);
   padding: 0 3px;
   transition: background 0.2s ease, color 0.2s ease;
   pointer-events: auto;
 }
 
 .bio-link:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(51, 132, 140, 0.624);
   color: #a5a5a5;
 }
 

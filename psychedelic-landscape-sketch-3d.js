@@ -377,7 +377,7 @@ if (!canvas) {
     function createMoth() {
         const g = new THREE.Group();
         const wingMat = new THREE.MeshBasicMaterial({
-            color: 0xe1ded6,
+            color: 10921377,
             transparent: true,
             opacity: 0.9,
             side: THREE.DoubleSide,
@@ -419,7 +419,7 @@ if (!canvas) {
         g.renderOrder = 999;
 
         g.rotation.set(0.05, 0.12, 0.03);
-        g.scale.set(0.92, 0.92, 0.92);
+        g.scale.set(0.62, 0.62, 0.62);
 
         g.position.set(0.72, 0.18, -0.02);
         scene.add(g);
