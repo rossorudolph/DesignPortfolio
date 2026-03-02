@@ -386,7 +386,7 @@ if (!canvas) {
         });
         function ovalWing(rx, ry) {
             const s = new THREE.Shape();
-            s.absellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+            s.absellipse(0, 0, rx, ry, 0, Math.PI * 2, false);
             return new THREE.Mesh(new THREE.ShapeGeometry(s), wingMat.clone());
         }
         const upperRx = 0.016;
