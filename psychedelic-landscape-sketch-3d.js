@@ -418,7 +418,8 @@ if (!canvas) {
         g.add(rightWing);
         g.renderOrder = 999;
 
-        g.rotation.set(0.05, 0.12, 0.03);
+        //g.rotation.set(0.05, 0.12, 0.03);
+        g.rotation.set(0.8, 0.12, -0.3);
         g.scale.set(0.62, 0.62, 0.62);
 
         g.position.set(0.72, 0.18, -0.02);
