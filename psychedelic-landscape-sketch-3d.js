@@ -683,8 +683,8 @@ if (!canvas) {
 
         if (moth) {
             mothTarget.set(
-                0.72 + Math.sin(time * 0.34 + moth.phase) * 0.22 + Math.sin(time * 0.14 + moth.phase * 0.6) * 0.08,
-                0.18 + Math.sin(time * 0.46 + moth.phase * 0.7) * 0.05,
+                0.82 + Math.sin(time * 0.34 + moth.phase) * 0.22 + Math.sin(time * 0.14 + moth.phase * 0.6) * 0.08,
+                0.38 + Math.sin(time * 0.46 + moth.phase * 0.7) * 0.05,
                 -0.02 + Math.cos(time * 0.3 + moth.phase * 1.2) * 0.14
             );
 
