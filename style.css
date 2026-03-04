@@ -301,6 +301,12 @@ canvas {
   border-radius: 8px;
 }
 
+.project-text {
+  margin: 0 0 1.5rem;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
 .project-page .bodycontainer,
 .project-page .bodycontainer2 {
   left: 0;
