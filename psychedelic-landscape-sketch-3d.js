@@ -593,7 +593,8 @@ if (!canvas) {
         mossGroup.add(hillMesh);
 
         const catchGeo = new THREE.PlaneGeometry(2.0, 2.0);
-        const catchMat = new THREE.ShadowMaterial({ opacity: 0.12 });
+//        const catchMat = new THREE.ShadowMaterial({ opacity: 0.12 });
+        const catchMat = new THREE.ShadowMaterial({ opacity: 0.42 });
         shadowCatcher = new THREE.Mesh(catchGeo, catchMat);
         shadowCatcher.rotation.x = -Math.PI / 2;
         shadowCatcher.position.set(0.0, -0.017, 0.0);
@@ -730,7 +731,8 @@ if (!canvas) {
             moth.velocity.addScaledVector(desired, 0.0046);
             moth.velocity.multiplyScalar(0.94);
             moth.group.position.add(moth.velocity);
-            const flap = Math.sin(time * 17 + moth.phase) * 0.52;
+ //           const flap = Math.sin(time * 17 + moth.phase) * 0.52;
+            const flap = Math.sin(time * 27 + moth.phase) * 0.52;
             const flutter = Math.sin(time * 32 + moth.phase * 1.7) * 0.08;
             moth.leftWing.rotation.y = 0.16 + flap;
             moth.rightWing.rotation.y = -0.16 - flap;
