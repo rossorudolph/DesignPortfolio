@@ -163,6 +163,29 @@ canvas {
   97% { transform: translate(0, 0); opacity: 1; }
 }
 
+/* ─── Bloom overlay: soft pulsating glow for ethereal atmosphere ─── */
+.bloom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    background: radial-gradient(
+        ellipse 85% 55% at 50% 30%,
+        rgba(190, 235, 210, 0.13) 0%,
+        rgba(160, 215, 190, 0.06) 45%,
+        rgba(130, 195, 170, 0) 72%
+    );
+    animation: bloom-pulse 5s ease-in-out infinite;
+}
+
+@keyframes bloom-pulse {
+    0%, 100% { opacity: 0.55; }
+    50%       { opacity: 1.0; }
+}
+
 /* ─── Project pages (terrarium, god image, landscape): moss background, no header ─── */
 .project-page {
   padding-top: 0;
@@ -317,15 +340,16 @@ canvas {
 
 @media (max-width: 768px) {
   .project-content {
-    padding: 64px 20px 32px;
+    padding: 64px 0 32px;
   }
   .project-page .bodycontainer,
   .project-page .bodycontainer2 {
     left: 0;
-    width: calc(100% - 40px);
+    width: 100%;
     max-width: none;
-    margin: 0 auto 1.5rem;
-    padding: 1.25rem 1.25rem;
+    margin: 0 0 1.5rem;
+    border-radius: 0;
+    padding: 1.25rem 1rem;
     box-sizing: border-box;
   }
   .project-page .bodycontainer {
