@@ -141,8 +141,8 @@ if (!canvas) {
             const primaryLen = (0.095 + Math.random() * 0.07) * scale * (1 - t * 0.72);
             const primaryDir = new THREE.Vector3()
                 .copy(sideVec)
-                .multiplyScalar(side * 0.55)
-                .addScaledVector(tangent, 0.45)
+                .multiplyScalar(side * 0.38)
+                .addScaledVector(tangent, 0.62)
                 .addScaledVector(UP, -0.05)
                 .normalize();
             const leafMat = leafMats[i % leafMats.length];
@@ -167,8 +167,8 @@ if (!canvas) {
                 const secSide = s % 2 === 0 ? -1 : 1;
                 const secDir = new THREE.Vector3()
                     .copy(sideVec)
-                    .multiplyScalar(secSide * side * 0.5)
-                    .addScaledVector(primaryDir, 0.55)
+                    .multiplyScalar(secSide * side * 0.35)
+                    .addScaledVector(primaryDir, 0.70)
                     .addScaledVector(UP, -0.05)
                     .normalize();
                 const secLen = primaryLen * (0.16 + Math.random() * 0.08) * (1 - t * 0.62);
@@ -293,19 +293,20 @@ if (!canvas) {
         glowCanvas.height = 128;
         const gctx = glowCanvas.getContext('2d');
         const rad = gctx.createRadialGradient(64, 64, 2, 64, 64, 64);
-        rad.addColorStop(0, 'rgba(235,255,236,0.7)');
-        rad.addColorStop(0.5, 'rgba(208,244,210,0.2)');
-        rad.addColorStop(1, 'rgba(208,244,210,0)');
+        rad.addColorStop(0, 'rgba(245,255,248,0.85)');
+        rad.addColorStop(0.45, 'rgba(220,248,228,0.28)');
+        rad.addColorStop(1, 'rgba(210,245,220,0)');
         gctx.fillStyle = rad;
         gctx.fillRect(0, 0, 128, 128);
         const glowTex = new THREE.CanvasTexture(glowCanvas);
 
-        for (let i = 0; i < 22; i++) {
+        // Main shimmer dots — more numerous and slightly brighter for bloom feel
+        for (let i = 0; i < 30; i++) {
             const sm = new THREE.SpriteMaterial({
                 map: glowTex,
-                color: 0xeaf7ec,
+                color: 0xf0faf3,
                 transparent: true,
-                opacity: 0.065 + Math.random() * 0.06,
+                opacity: 0.08 + Math.random() * 0.08,
                 depthWrite: false,
                 blending: THREE.AdditiveBlending,
             });
@@ -322,6 +323,43 @@ if (!canvas) {
                 twinkle: 0.02 + Math.random() * 0.028,
             });
         }
+
+        // Large halo bloom sprites — wide, very low opacity, for heaven-like haze
+        const haloCanvas = document.createElement('canvas');
+        haloCanvas.width = 256;
+        haloCanvas.height = 256;
+        const hctx = haloCanvas.getContext('2d');
+        const hrad = hctx.createRadialGradient(128, 128, 8, 128, 128, 128);
+        hrad.addColorStop(0, 'rgba(230,255,238,0.55)');
+        hrad.addColorStop(0.5, 'rgba(210,245,222,0.18)');
+        hrad.addColorStop(1, 'rgba(200,240,215,0)');
+        hctx.fillStyle = hrad;
+        hctx.fillRect(0, 0, 256, 256);
+        const haloTex = new THREE.CanvasTexture(haloCanvas);
+
+        for (let i = 0; i < 3; i++) {
+            const hm = new THREE.SpriteMaterial({
+                map: haloTex,
+                color: 0xedf8f1,
+                transparent: true,
+                opacity: 0.038 + Math.random() * 0.022,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+            });
+            const halo = new THREE.Sprite(hm);
+            halo.position.set((Math.random() - 0.5) * 0.9, 0.1 + Math.random() * 0.25, (Math.random() - 0.5) * 0.9);
+            const hs = 0.5 + Math.random() * 0.2;
+            halo.scale.set(hs, hs, 1);
+            shimmerGroup.add(halo);
+            shimmerDots.push({
+                dot: halo,
+                baseY: halo.position.y,
+                phase: Math.random() * Math.PI * 2,
+                amp: 0.003 + Math.random() * 0.005,
+                twinkle: 0.008 + Math.random() * 0.012,
+            });
+        }
+
         shimmerGroup.position.set(0.0, 0, 0);
         mossGroup.add(shimmerGroup);
     }
