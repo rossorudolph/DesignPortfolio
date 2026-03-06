@@ -690,14 +690,14 @@ h4{
 }
 
 h5{
-  font-size: 55px;
+  font-size: 35px;
   margin-bottom: -5px;
   font-family: "Karla", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 650;
+  font-weight: 450;
   font-style: normal;
   color: #232323;
-  letter-spacing:-0.05cm;
+  letter-spacing:-0.02cm;
 }
 
 .header-title {
