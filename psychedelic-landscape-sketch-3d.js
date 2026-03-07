@@ -20,6 +20,7 @@ if (!canvas) {
 
     const tempWorld = new THREE.Vector3();
     const tempLocal = new THREE.Vector3();
+    const _mothDesired = new THREE.Vector3();
 
     const STEM_COLORS = [
         { r: 224, g: 232, b: 222 },
@@ -157,7 +158,6 @@ if (!canvas) {
             primaryLeaf.position.copy(p).lerp(pEnd, 0.6);
             primaryLeaf.scale.set(1, (primaryLen * 0.7) / 0.055, 1);
             primaryLeaf.quaternion.setFromUnitVectors(UP, primaryDir);
-            primaryLeaf.castShadow = true;
             pivot.add(primaryLeaf);
 
             const secCount = t < 0.55 ? 4 : (t < 0.75 ? 3 : 2);
@@ -185,7 +185,6 @@ if (!canvas) {
                 tiny.position.copy(sp).lerp(secEnd, 0.58);
                 tiny.scale.set(1, (secLen * 0.95) / 0.026, 1);
                 tiny.quaternion.setFromUnitVectors(UP, secDir);
-                tiny.castShadow = true;
                 pivot.add(tiny);
             }
         }
@@ -392,7 +391,6 @@ if (!canvas) {
             needle.quaternion.setFromUnitVectors(UP, dir);
             needle.rotateX((Math.random() - 0.5) * 0.5);
             needle.rotateZ((Math.random() - 0.5) * 0.38);
-            needle.castShadow = true;
             clump.add(needle);
         }
 
@@ -562,7 +560,7 @@ if (!canvas) {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.shadowMap.type = THREE.PCFShadowMap;
 
         const hemi = new THREE.HemisphereLight(0xbfd2c3, 0x0d2516, 0.8);
         scene.add(hemi);
@@ -570,7 +568,7 @@ if (!canvas) {
         const key = new THREE.DirectionalLight(0xffffff, 1.1);
         key.position.set(2.2, 3.5, 2.3);
         key.castShadow = true;
-        key.shadow.mapSize.set(1024, 1024);
+        key.shadow.mapSize.set(512, 512);
         key.shadow.camera.near = 0.2;
         key.shadow.camera.far = 10;
         key.shadow.camera.left = -3;
@@ -654,6 +652,16 @@ if (!canvas) {
             const influence = d < pullRadius ? (1 - d / pullRadius) : 0;
             if (!frond.collapsed && d < crumbleRadius) {
                 frond.collapsed = true;
+                // Cache all materials once at collapse time to avoid per-frame traverse
+                frond._cachedMaterials = [];
+                frond.pivot.traverse((o) => {
+                    if (o.isMesh && o.material) {
+                        frond._cachedMaterials.push({
+                            mat: o.material,
+                            origColor: o.material.color ? o.material.color.clone() : null,
+                        });
+                    }
+                });
                 if (!frond.ashSpawned) {
                     tempWorld.copy(frond.tipProbe.getWorldPosition(new THREE.Vector3()));
                     tempWorld.project(camera);
@@ -683,19 +691,16 @@ if (!canvas) {
             const targetY = (frond.homeY ?? -0.004) - collapseY;
             frond.pivot.position.y += (targetY - frond.pivot.position.y) * 0.15;
             const flatScale = 1 - frond.collapse * 0.92;
-            if (frond.collapsed) {
-                frond.pivot.traverse((o) => {
-                    if (o.material) {
-                        if (!o.userData.origOpacity) o.userData.origOpacity = o.material.opacity !== undefined ? o.material.opacity : 1;
-                        if (o.material.color && !o.userData.origColor) o.userData.origColor = o.material.color.clone();
-                        o.material.transparent = true;
-                        o.material.opacity = Math.max(0.32, 1 - frond.collapse * 0.76);
-                        if (o.material.color && o.userData.origColor) {
-                            const colorFade = Math.min(1, Math.pow(frond.collapse, 1.25));
-                            o.material.color.copy(o.userData.origColor).lerp(DEAD_FROND_COLOR, colorFade);
-                        }
+            if (frond.collapsed && frond._cachedMaterials && frond.collapse < 1) {
+                const opacity = Math.max(0.32, 1 - frond.collapse * 0.76);
+                const colorFade = Math.min(1, Math.pow(frond.collapse, 1.25));
+                for (const entry of frond._cachedMaterials) {
+                    entry.mat.transparent = true;
+                    entry.mat.opacity = opacity;
+                    if (entry.mat.color && entry.origColor) {
+                        entry.mat.color.copy(entry.origColor).lerp(DEAD_FROND_COLOR, colorFade);
                     }
-                });
+                }
             }
             if (typeof frond.growthProgress === 'number') {
                 const age = time - (scene.userData.startTime ?? time);
@@ -727,7 +732,7 @@ if (!canvas) {
                 -0.02 + Math.cos(time * 0.3 + moth.phase * 1.2) * 0.14
             );
 
-            const desired = new THREE.Vector3().subVectors(mothTarget, moth.group.position);
+            const desired = _mothDesired.subVectors(mothTarget, moth.group.position);
             moth.velocity.addScaledVector(desired, 0.0046);
             moth.velocity.multiplyScalar(0.94);
             moth.group.position.add(moth.velocity);
@@ -790,8 +795,10 @@ if (!canvas) {
         ctx.restore();
     }
 
+    const _cursorCanvas = document.getElementById('cursorCanvas');
+
     function drawCursor() {
-        const cur = document.getElementById('cursorCanvas');
+        const cur = _cursorCanvas;
         if (!cur || !cur.getContext) return;
         const cctx = cur.getContext('2d');
         cctx.clearRect(0, 0, cur.width, cur.height);
