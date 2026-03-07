@@ -253,10 +253,12 @@ if (!canvas) {
         fogCanvas.width = 256;
         fogCanvas.height = 256;
         const ctx = fogCanvas.getContext('2d');
-        const grad = ctx.createRadialGradient(128, 128, 16, 128, 128, 120);
-        grad.addColorStop(0, 'rgba(255,255,255,0.22)');
-        grad.addColorStop(0.45, 'rgba(245,248,246,0.09)');
-        grad.addColorStop(1, 'rgba(240,244,242,0)');
+        const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 100);
+        grad.addColorStop(0,    'rgba(255,255,255,0.18)');
+        grad.addColorStop(0.3,  'rgba(248,251,249,0.10)');
+        grad.addColorStop(0.6,  'rgba(244,248,246,0.04)');
+        grad.addColorStop(0.85, 'rgba(242,246,244,0.01)');
+        grad.addColorStop(1,    'rgba(240,244,242,0)');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, 256, 256);
         const fogTex = new THREE.CanvasTexture(fogCanvas);
@@ -560,7 +562,7 @@ if (!canvas) {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFShadowMap;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         const hemi = new THREE.HemisphereLight(0xbfd2c3, 0x0d2516, 0.8);
         scene.add(hemi);
