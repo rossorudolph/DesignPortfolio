@@ -180,6 +180,8 @@ canvas {
     );
     animation: bloom-pulse 5s ease-in-out infinite;
 }
+/* Uncomment next line to disable bloom overlay for lag testing: */
+/* .bloom-overlay { display: none !important; } */
 
 @keyframes bloom-pulse {
     0%, 100% { opacity: 0.55; }

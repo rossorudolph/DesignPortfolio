@@ -101,7 +101,7 @@ if (!canvas) {
         // Prostrate runner: mostly horizontal, hugging the ground.
         const len = (0.24 + Math.random() * 0.18) * scale;
         const points = [];
-        const segments = 12;
+        const segments = 14;
         const straighter = Math.random() < 0.4;
         const curveAmp = (straighter ? (0.006 + Math.random() * 0.012) : (0.016 + Math.random() * 0.024)) * scale;
         const phase = Math.random() * Math.PI * 2;
@@ -109,12 +109,14 @@ if (!canvas) {
         const lift = (straighter ? (0.02 + Math.random() * 0.024) : (0.03 + Math.random() * 0.05)) * scale;
         for (let i = 0; i <= segments; i++) {
             const t = i / segments;
-            const x = t * len;
-            // Start grounded, rise up, then curve tip back down.
-            const yArc = Math.sin(t * Math.PI) * lift;
-            const yTipDrop = Math.pow(t, 1.45) * droop;
-            const y = Math.max(-0.006, yArc - yTipDrop + (Math.random() - 0.5) * 0.0008);
-            const z = Math.sin(t * 2.1 + phase) * curveAmp * (1 - t * 0.22);
+            // Condensed sampling toward tip (s closer together at high t); curve shape uses s so it stays smooth.
+            const s = 1 - Math.pow(1 - t, 1.8);
+            const x = len * s;
+            // Start grounded, rise up, then curve tip back down (curve defined in s for smooth spine).
+            const yArc = Math.sin(s * Math.PI) * lift;
+            const yTipDrop = Math.pow(s, 1.45) * droop;
+            const y = Math.max(-0.006, yArc - yTipDrop);
+            const z = Math.sin(s * 2.1 + phase) * curveAmp * (1 - s * 0.22);
             points.push(new THREE.Vector3(x, y, z));
         }
 
@@ -129,7 +131,7 @@ if (!canvas) {
             addTaperedSegment(pivot, points[i], points[i + 1], r0, r1, stemMat);
         }
 
-        // Primary and secondary leaflets, decreasing toward the tip.
+        // Primary and secondary leaflets. Main stem = tangent; primary stemlets ~90° to main stem (lateral, not sloping forward).
         for (let i = 1; i < points.length - 2; i++) {
             const t = i / (points.length - 1);
             const p = points[i];
@@ -139,15 +141,17 @@ if (!canvas) {
             sideVec.normalize();
 
             const side = i % 2 === 0 ? -1 : 1;
-            const primaryLen = (0.095 + Math.random() * 0.07) * scale * (1 - t * 0.72);
+            let primaryLen = (0.095 + Math.random() * 0.07) * scale * (1 - t * 0.85);
+            // First stemlet from base shorter than second to reduce "Christmas tree" silhouette
+            if (i === 1) primaryLen *= 0.68;
+            // Primary stemlets perpendicular to main stem (red-arc angle ~90°): lateral-dominant, minimal tangent
             const primaryDir = new THREE.Vector3()
                 .copy(sideVec)
-                .multiplyScalar(side * 0.38)
-                .addScaledVector(tangent, 0.62)
+                .multiplyScalar(side * 0.94)
+                .addScaledVector(tangent, 0.06)
                 .addScaledVector(UP, -0.05)
                 .normalize();
             const leafMat = leafMats[i % leafMats.length];
-
             const pEnd = new THREE.Vector3().copy(p).addScaledVector(primaryDir, primaryLen);
             const stemRHere = THREE.MathUtils.lerp(0.0025 * scale, 0.0009 * scale, taperEase(t));
             const primaryR0 = Math.max(stemRHere * 0.7, 0.0012 * scale);
@@ -160,18 +164,20 @@ if (!canvas) {
             primaryLeaf.quaternion.setFromUnitVectors(UP, primaryDir);
             pivot.add(primaryLeaf);
 
-            const secCount = t < 0.55 ? 4 : (t < 0.75 ? 3 : 2);
+            const secCount = t < 0.5 ? 5 : (t < 0.72 ? 4 : 3);
+            const stPositions = [0.22, 0.4, 0.55, 0.7, 0.85];
+            // Tiny leaflets: perpendicular to primary + tilt upward toward frond tip (fanned/fluffy)
+            const perp = new THREE.Vector3().crossVectors(primaryDir, UP).normalize();
             for (let s = 0; s < secCount; s++) {
-                const st = s === 0 ? 0.28 : (s === 1 ? 0.55 : 0.8);
+                const st = stPositions[Math.min(s, stPositions.length - 1)];
                 const sp = new THREE.Vector3().copy(p).lerp(pEnd, st);
                 const secSide = s % 2 === 0 ? -1 : 1;
                 const secDir = new THREE.Vector3()
-                    .copy(sideVec)
-                    .multiplyScalar(secSide * side * 0.35)
-                    .addScaledVector(primaryDir, 0.70)
-                    .addScaledVector(UP, -0.05)
+                    .copy(perp).multiplyScalar(secSide * side * 0.72)
+                    .addScaledVector(primaryDir, 0.22)
+                    .addScaledVector(UP, 0.06)
                     .normalize();
-                const secLen = primaryLen * (0.16 + Math.random() * 0.08) * (1 - t * 0.62);
+                const secLen = primaryLen * (0.16 + Math.random() * 0.08) * (1 - t * 0.88);
                 const secMat = leafMats[(i + s + 1) % leafMats.length];
                 const secEnd = new THREE.Vector3().copy(sp).addScaledVector(secDir, secLen);
                 const secR0 = Math.max(primaryR0 * (1 - st * 0.3), 0.0004 * scale);
@@ -250,16 +256,34 @@ if (!canvas) {
     function createFogVeils() {
         fogGroup = new THREE.Group();
         const fogCanvas = document.createElement('canvas');
-        fogCanvas.width = 256;
-        fogCanvas.height = 256;
+        fogCanvas.width = 512;
+        fogCanvas.height = 512;
         const ctx = fogCanvas.getContext('2d');
-        const grad = ctx.createRadialGradient(128, 128, 16, 128, 128, 120);
+        const cx = 256;
+        const grad = ctx.createRadialGradient(cx, cx, 32, cx, cx, 240);
         grad.addColorStop(0, 'rgba(255,255,255,0.22)');
-        grad.addColorStop(0.45, 'rgba(245,248,246,0.09)');
+        grad.addColorStop(0.15, 'rgba(250,251,250,0.16)');
+        grad.addColorStop(0.35, 'rgba(247,249,247,0.11)');
+        grad.addColorStop(0.5, 'rgba(245,248,246,0.07)');
+        grad.addColorStop(0.65, 'rgba(243,246,244,0.04)');
+        grad.addColorStop(0.8, 'rgba(241,244,242,0.015)');
         grad.addColorStop(1, 'rgba(240,244,242,0)');
         ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, 256, 256);
+        ctx.fillRect(0, 0, 512, 512);
+        // Subtle noise to break up concentric circles from the radial gradient
+        const imgData = ctx.getImageData(0, 0, 512, 512);
+        const data = imgData.data;
+        for (let i = 0; i < data.length; i += 4) {
+            const n = (Math.random() - 0.5) * 6;
+            data[i] = Math.max(0, Math.min(255, data[i] + n));
+            data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + n));
+            data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + n));
+        }
+        ctx.putImageData(imgData, 0, 0);
         const fogTex = new THREE.CanvasTexture(fogCanvas);
+        fogTex.minFilter = THREE.LinearFilter;
+        fogTex.magFilter = THREE.LinearFilter;
+        fogTex.needsUpdate = true;
 
         for (let i = 0; i < 4; i++) {
             const mat = new THREE.SpriteMaterial({
@@ -456,7 +480,7 @@ if (!canvas) {
 
         //g.rotation.set(0.05, 0.12, 0.03);
         g.rotation.set(0.8, 0.12, -0.3);
-        g.scale.set(0.62, 0.62, 0.62);
+        g.scale.set(0.31, 0.31, 0.31);
 
         g.position.set(0.72, 0.18, -0.02);
         scene.add(g);
@@ -491,11 +515,11 @@ if (!canvas) {
         mossFronds.length = 0;
         const basePositions = [];
 
-        // Irregular patch; some fronds placed so others' bases sit under their leaves.
-        const baseFrondCount = 20;
+        // Irregular patch; some fronds placed so others' bases sit under their leaves. ~1/3 fewer, slightly wider spread.
+        const baseFrondCount = 14;
         for (let i = 0; i < baseFrondCount; i++) {
-            const x = (Math.random() - 0.5) * 0.64 + (Math.random() - 0.5) * 0.05;
-            const z = (Math.random() - 0.5) * 0.58 + (Math.random() - 0.5) * 0.05;
+            const x = (Math.random() - 0.5) * 0.72 + (Math.random() - 0.5) * 0.05;
+            const z = (Math.random() - 0.5) * 0.66 + (Math.random() - 0.5) * 0.05;
             const a = Math.random() * Math.PI * 2;
             basePositions.push({ x, z });
 
@@ -509,7 +533,7 @@ if (!canvas) {
             mossGroup.add(frond.pivot);
             mossFronds.push(frond);
 
-            const childCount = Math.random() > 0.72 ? 1 : 0;
+            const childCount = Math.random() > 0.82 ? 1 : 0;
             for (let c = 0; c < childCount; c++) {
                 const attach = frond.attachPoints[Math.floor(Math.random() * frond.attachPoints.length)];
                 const child = createFrond((0.56 + Math.random() * 0.22) * (0.9 + (1 - attach.x / 0.7) * 0.2));
@@ -526,7 +550,7 @@ if (!canvas) {
         }
 
         // Short overlap fronds whose leaves sit over other fronds' bases to hide stem emergence.
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 6; i++) {
             const ref = basePositions[Math.floor(Math.random() * basePositions.length)];
             const x = ref.x + (Math.random() - 0.5) * 0.08;
             const z = ref.z + (Math.random() - 0.5) * 0.08;
@@ -560,7 +584,7 @@ if (!canvas) {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFShadowMap;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         const hemi = new THREE.HemisphereLight(0xbfd2c3, 0x0d2516, 0.8);
         scene.add(hemi);
@@ -568,7 +592,7 @@ if (!canvas) {
         const key = new THREE.DirectionalLight(0xffffff, 1.1);
         key.position.set(2.2, 3.5, 2.3);
         key.castShadow = true;
-        key.shadow.mapSize.set(512, 512);
+        key.shadow.mapSize.set(1024, 1024);
         key.shadow.camera.near = 0.2;
         key.shadow.camera.far = 10;
         key.shadow.camera.left = -3;
