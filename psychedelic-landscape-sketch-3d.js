@@ -153,24 +153,48 @@ if (!canvas) {
                 .normalize();
             const leafMat = leafMats[i % leafMats.length];
             const pEnd = new THREE.Vector3().copy(p).addScaledVector(primaryDir, primaryLen);
+            // Stemlet curve: curl toward ground like main stem, visible arc (smooth with 6 points)
+            const mid = new THREE.Vector3().addVectors(points[i + 1], points[i - 1]).multiplyScalar(0.5);
+            let curveDir = new THREE.Vector3().subVectors(mid, p);
+            if (curveDir.lengthSq() < 1e-8) curveDir.copy(UP);
+            else curveDir.normalize();
+            const stemletCurveAmp = Math.max(0.08 * primaryLen, 0.5 * curveAmp * (primaryLen / len));
+            const numCurveSegs = 5;
+            const stemletPoints = [p.clone()];
+            for (let seg = 1; seg <= numCurveSegs; seg++) {
+                const u = seg / numCurveSegs;
+                const curve = Math.sin(u * Math.PI);
+                const pt = new THREE.Vector3().copy(p).addScaledVector(primaryDir, u * primaryLen);
+                pt.addScaledVector(curveDir, -stemletCurveAmp * curve);
+                stemletPoints.push(pt);
+            }
+            const stemletPointAt = (u) => {
+                const seg = Math.min(numCurveSegs - 1, Math.floor(u * numCurveSegs));
+                const local = Math.min(1, u * numCurveSegs - seg);
+                return new THREE.Vector3().lerpVectors(stemletPoints[seg], stemletPoints[seg + 1], local);
+            };
             const stemRHere = THREE.MathUtils.lerp(0.0025 * scale, 0.0009 * scale, taperEase(t));
             const primaryR0 = Math.max(stemRHere * 0.7, 0.0012 * scale);
             const primaryR1 = THREE.MathUtils.lerp(0.0011 * scale, 0.0004 * scale, taperEase(1));
-            addTaperedSegment(pivot, p, pEnd, primaryR0, primaryR1, leafMat);
+            for (let seg = 0; seg < numCurveSegs; seg++) {
+                const r0 = THREE.MathUtils.lerp(primaryR0, primaryR1, seg / numCurveSegs);
+                const r1 = THREE.MathUtils.lerp(primaryR0, primaryR1, (seg + 1) / numCurveSegs);
+                addTaperedSegment(pivot, stemletPoints[seg], stemletPoints[seg + 1], r0, r1, leafMat);
+            }
 
             const primaryLeaf = new THREE.Mesh(leafGeo, leafMat);
-            primaryLeaf.position.copy(p).lerp(pEnd, 0.6);
+            primaryLeaf.position.copy(stemletPointAt(0.6));
             primaryLeaf.scale.set(1, (primaryLen * 0.7) / 0.055, 1);
             primaryLeaf.quaternion.setFromUnitVectors(UP, primaryDir);
             pivot.add(primaryLeaf);
 
             const secCount = t < 0.5 ? 5 : (t < 0.72 ? 4 : 3);
-            const stPositions = [0.22, 0.4, 0.55, 0.7, 0.85];
+            const stPositions = [0.22, 0.4, 0.55, 0.7, 0.76];
             // Tiny leaflets: perpendicular to primary + tilt upward toward frond tip (fanned/fluffy)
             const perp = new THREE.Vector3().crossVectors(primaryDir, UP).normalize();
             for (let s = 0; s < secCount; s++) {
                 const st = stPositions[Math.min(s, stPositions.length - 1)];
-                const sp = new THREE.Vector3().copy(p).lerp(pEnd, st);
+                const sp = stemletPointAt(st);
                 const secSide = s % 2 === 0 ? -1 : 1;
                 const secDir = new THREE.Vector3()
                     .copy(perp).multiplyScalar(secSide * side * 0.72)
@@ -397,25 +421,50 @@ if (!canvas) {
             metalness: 0.0,
         });
         const needleLen = 0.046 * scale;
-        const needleGeo = new THREE.CylinderGeometry(0.0003 * scale, 0.00115 * scale, needleLen, 5);
         const needleCount = 43;
+        const baseR = 0.0003 * scale;
+        const tipR = 0.00115 * scale;
+        const numArcSegs = 4;
         for (let i = 0; i < needleCount; i++) {
             const a = Math.random() * Math.PI * 2;
             const r = Math.sqrt(Math.random()) * 0.038 * scale;
             const h = 0.002 + Math.random() * 0.008 * scale;
             const nx = Math.cos(a) * r;
             const nz = Math.sin(a) * r;
-            const needle = new THREE.Mesh(needleGeo, needleMat);
-            needle.position.set(nx, h, nz);
             const dir = new THREE.Vector3(
                 nx * 0.56,
                 0.006 * scale + Math.random() * 0.016 * scale,
                 nz * 0.56
             ).normalize();
-            needle.quaternion.setFromUnitVectors(UP, dir);
-            needle.rotateX((Math.random() - 0.5) * 0.5);
-            needle.rotateZ((Math.random() - 0.5) * 0.38);
-            clump.add(needle);
+            const outFromCenter = new THREE.Vector3(nx, 0, nz).lengthSq() > 1e-10
+                ? new THREE.Vector3(nx, 0, nz).normalize()
+                : new THREE.Vector3(1, 0, 0);
+            const curveDir = new THREE.Vector3()
+                .crossVectors(dir, outFromCenter)
+                .addScaledVector(UP, -0.4)
+                .normalize();
+            if (Math.random() < 0.5) curveDir.negate();
+            const curveAmp = needleLen * (0.06 + Math.random() * 0.08);
+            const arcPoints = [];
+            for (let k = 0; k <= numArcSegs; k++) {
+                const u = k / numArcSegs;
+                const curve = Math.sin(u * Math.PI);
+                const pt = new THREE.Vector3(nx, h, nz).addScaledVector(dir, u * needleLen).addScaledVector(curveDir, curveAmp * curve);
+                arcPoints.push(pt);
+            }
+            for (let k = 0; k < numArcSegs; k++) {
+                const p0 = arcPoints[k];
+                const p1 = arcPoints[k + 1];
+                const segLen = p0.distanceTo(p1);
+                const segDir = new THREE.Vector3().subVectors(p1, p0).normalize();
+                const r0 = THREE.MathUtils.lerp(baseR, tipR, k / numArcSegs);
+                const r1 = THREE.MathUtils.lerp(baseR, tipR, (k + 1) / numArcSegs);
+                const segGeo = new THREE.CylinderGeometry(r0, r1, segLen, 5);
+                const seg = new THREE.Mesh(segGeo, needleMat);
+                seg.position.copy(p0).add(p1).multiplyScalar(0.5);
+                seg.quaternion.setFromUnitVectors(UP, segDir);
+                clump.add(seg);
+            }
         }
 
         mossGroup.add(clump);
