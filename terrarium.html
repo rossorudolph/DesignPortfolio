@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Gantari:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="favicon r.svg">
-    <script src="https://cdn.jsdelivr.net/npm/@mkkellogg/gaussian-splats-3d@0.4.4/build/gaussian-splats-3d.umd.min.js"></script>
 </head>
 <body class="project-page dark-moss-theme">
     <canvas id="myCanvas"></canvas>
@@ -25,19 +24,24 @@
                 <!-- <iframe src="https://lumalabs.ai/capture/2E57136A-43A2-4859-B9C9-E5F2B3605503?mode=sparkles&background=%230a1a0e&color=%23ffffff&showTitle=false&loadBg=true&logoColor=false&baseColor=%230a1a0e&trimBackground=false&useWarpBackground=false" style="max-width: 800px; width: 100%; height: 500px; margin: auto; display: block; border: none; border-radius: 4px;"></iframe> -->
                 <br>
                 <div id="splat-viewer" style="max-width: 800px; width: 100%; height: 500px; margin: auto; background: #0a1a0e;"></div>
-                <script src="https://cdn.jsdelivr.net/npm/@mkkellogg/gaussian-splats-3d@0.4.4/build/gaussian-splats-3d.umd.min.js"></script>
                 <script>
-                  document.addEventListener('DOMContentLoaded', function() {
-                    const root = document.getElementById('splat-viewer');
-                    const viewer = new GaussianSplats3D.Viewer({ rootElement: root });
-                    const splatPath = new URL('assets/gs_Unit01.splat', document.baseURI || window.location.href).href;
+                  function initSplatViewer() {
+                    var root = document.getElementById('splat-viewer');
+                    if (!root) return;
+                    if (typeof GaussianSplats3D === 'undefined') {
+                      root.innerHTML = '<p style="color:#8a9;padding:1em;">3D viewer library could not load. Try opening this page with a local server (e.g. Live Server).</p>';
+                      return;
+                    }
+                    var viewer = new GaussianSplats3D.Viewer({ rootElement: root });
+                    var splatPath = new URL('assets/gs_Unit01.splat', document.baseURI || window.location.href).href;
                     viewer.addSplatScene(splatPath, { showLoadingUI: true })
-                      .then(() => viewer.start())
-                      .catch(err => {
-                        root.innerHTML = '<p style="color:#8a9;padding:1em;">3D capture failed to load — open via Live Server</p>';
+                      .then(function() { viewer.start(); })
+                      .catch(function(err) {
+                        root.innerHTML = '<p style="color:#8a9;padding:1em;">3D capture failed to load. Open this page via a local server (e.g. Live Server) to view the splat.</p>';
                       });
-                  });
+                  }
                 </script>
+                <script src="https://cdn.jsdelivr.net/npm/@mkkellogg/gaussian-splats-3d@0.4.4/build/gaussian-splats-3d.umd.min.js" onload="initSplatViewer()" onerror="var r=document.getElementById('splat-viewer');if(r)r.innerHTML='<p style=\'color:#8a9;padding:1em\'>Viewer failed to load.</p>';"></script>
                 <img src="assets/unit02 bg deleted.png" alt="Terrarium build" style="max-width: 800px; height: auto; margin: auto">
             </div>
         </div>
