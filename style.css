@@ -195,6 +195,13 @@ canvas {
   height: 100%;
 }
 
+/* Add this to your style.css if you want a seamless look */
+iframe {
+  filter: grayscale(0.2) contrast(1.1); /* Subtle artistic tweak */
+  border-top: 1px solid #1a3a23;      /* Minimalist 'structural' border */
+  border-bottom: 1px solid #1a3a23;
+}
+
 .project-page #overlay {
   position: fixed;
   top: 0;

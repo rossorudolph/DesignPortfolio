@@ -665,7 +665,7 @@ if (!canvas) {
 
         const catchGeo = new THREE.PlaneGeometry(2.0, 2.0);
 //        const catchMat = new THREE.ShadowMaterial({ opacity: 0.12 });
-        const catchMat = new THREE.ShadowMaterial({ opacity: 0.42 });
+        const catchMat = new THREE.ShadowMaterial({ opacity: 0.22 });
         shadowCatcher = new THREE.Mesh(catchGeo, catchMat);
         shadowCatcher.rotation.x = -Math.PI / 2;
         shadowCatcher.position.set(0.0, -0.017, 0.0);
