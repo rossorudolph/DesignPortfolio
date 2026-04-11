@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Spectrogram lab</title>
+    <link rel="icon" type="image/svg+xml" href="favicon r.svg">
+    <style>
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            height: 100%;
+            background: #000;
+            color: #a8a8a8;
+            font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
+            font-size: 12px;
+            overflow: hidden;
+        }
+        :root {
+            --spec-ui-h: 52px;
+            --spec-ruler-w: 76px;
+        }
+        #spec-canvas {
+            display: block;
+            position: fixed;
+            z-index: 2;
+            left: var(--spec-ruler-w);
+            top: var(--spec-ui-h);
+            width: calc(100% - var(--spec-ruler-w));
+            height: calc(100% - var(--spec-ui-h));
+            image-rendering: pixelated;
+        }
+        #spec-overlay {
+            display: block;
+            position: fixed;
+            z-index: 3;
+            left: var(--spec-ruler-w);
+            top: var(--spec-ui-h);
+            width: calc(100% - var(--spec-ruler-w));
+            height: calc(100% - var(--spec-ui-h));
+            pointer-events: none;
+        }
+        #freq-ruler {
+            position: fixed;
+            z-index: 4;
+            left: 0;
+            top: var(--spec-ui-h);
+            width: var(--spec-ruler-w);
+            height: calc(100% - var(--spec-ui-h));
+            background: linear-gradient(90deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.65) 70%, transparent 100%);
+            pointer-events: none;
+            border-right: 1px solid rgba(140, 100, 160, 0.25);
+        }
+        .freq-tick {
+            position: absolute;
+            left: 4px;
+            right: 2px;
+            transform: translateY(-50%);
+            color: rgba(200, 180, 210, 0.85);
+            font-size: 10px;
+            line-height: 1.15;
+            white-space: nowrap;
+            text-shadow: 0 0 6px #000;
+        }
+        .freq-tick .hz { color: rgba(160, 150, 170, 0.9); }
+        .freq-tick .note { color: rgba(255, 190, 140, 0.75); font-size: 9px; }
+        #piano-grid {
+            position: fixed;
+            z-index: 1;
+            left: var(--spec-ruler-w);
+            top: var(--spec-ui-h);
+            width: calc(100% - var(--spec-ruler-w));
+            height: calc(100% - var(--spec-ui-h));
+            pointer-events: none;
+        }
+        .piano-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 0;
+            border-top: 1px solid rgba(255, 200, 120, 0.14);
+        }
+        .piano-line.c {
+            border-top-color: rgba(200, 160, 255, 0.22);
+        }
+        .spec-ui {
+            position: fixed;
+            z-index: 5;
+            top: 0;
+            left: 0;
+            right: 0;
+            min-height: var(--spec-ui-h);
+            padding: 10px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 12px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 85%, transparent 100%);
+            pointer-events: none;
+        }
+        .spec-ui a,
+        .spec-ui button,
+        .spec-ui label {
+            pointer-events: auto;
+        }
+        .spec-ui button {
+            background: #1a1020;
+            color: #e8c8a8;
+            border: 1px solid #4a3058;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font: inherit;
+        }
+        .spec-ui button:hover:not(:disabled) {
+            background: #2a1830;
+            border-color: #6a4080;
+        }
+        .spec-ui button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        .spec-ui label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #888;
+            cursor: pointer;
+            font: inherit;
+        }
+        .spec-ui label input {
+            accent-color: #8a5a9e;
+        }
+        #spec-status {
+            flex: 1 1 180px;
+            min-width: 0;
+            color: #777;
+            font-size: 11px;
+            line-height: 1.35;
+        }
+        #spec-status.error {
+            color: #e08080;
+        }
+        .spec-ui a {
+            color: #9a7ab0;
+            text-decoration: none;
+        }
+        .spec-ui a:hover {
+            color: #c4a0d8;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="spec-canvas" aria-hidden="true"></canvas>
+    <canvas id="spec-overlay" aria-hidden="true"></canvas>
+    <div id="freq-ruler" aria-hidden="true"></div>
+    <div id="piano-grid" aria-hidden="true"></div>
+    <div class="spec-ui">
+        <a href="index.html">← site</a>
+        <button type="button" id="spec-start">Start microphone</button>
+        <button type="button" id="spec-stop" disabled>Stop</button>
+        <label title="Uses browser speech recognition (best in Chrome). Word times are estimated, not broadcast sync.">
+            <input type="checkbox" id="spec-transcribe" checked>
+            Transcribe
+        </label>
+        <span id="spec-status"></span>
+    </div>
+    <script src="spectrogram.js"></script>
+</body>
+</html>

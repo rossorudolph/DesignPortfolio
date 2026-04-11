@@ -127,6 +127,30 @@ canvas {
   background: #283593;
 }
 
+/* Spectrogram lab: same control, just right of wall piece; slightly redder indigo */
+.spectrogram-lab-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 48px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #221f82;
+  border: none;
+  border-radius: 4px;
+  color: transparent;
+  text-decoration: none;
+  z-index: 20;
+  pointer-events: auto;
+  transition: background 0.2s ease;
+}
+
+.spectrogram-lab-btn:hover {
+  background: #302a8f;
+}
+
 /* Main page: mobile — center bio box, breathing room, slightly larger text, top-aligned */
 @media (max-width: 640px) {
   .main-bio {
