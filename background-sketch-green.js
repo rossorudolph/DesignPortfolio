@@ -4,9 +4,19 @@
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
+const BASE_CIRCLE_COUNT = 10;
+const REFERENCE_AREA = 1440 * 900;
+const SPHERE_ALPHA = 0.032 * 0.2;
+
 let circles = [];
 let width, height;
 let mouseX = 0, mouseY = 0;
+
+function getCircleCount() {
+    const area = width * height;
+    const count = Math.round(BASE_CIRCLE_COUNT * (area / REFERENCE_AREA));
+    return Math.max(3, Math.min(BASE_CIRCLE_COUNT, count));
+}
 
 function resizeCanvas() {
     width = window.innerWidth;
@@ -18,7 +28,8 @@ function resizeCanvas() {
 
 function initializeCircles() {
     circles = [];
-    for (let i = 0; i < 10; i++) {
+    const count = getCircleCount();
+    for (let i = 0; i < count; i++) {
         circles.push(new Circle(Math.random() * width, Math.random() * height));
     }
 }
@@ -62,7 +73,7 @@ class Circle {
     display() {
         for (let d = this.radius + this.feather; d > this.radius; d -= 2) {
             let inter = (d - this.radius) / this.feather;
-            let alpha = (1 - inter) * 0.032;
+            let alpha = (1 - inter) * SPHERE_ALPHA;
             ctx.fillStyle = `rgba(188, 210, 190, ${alpha})`;
             ctx.beginPath();
             ctx.ellipse(this.x, this.y, d, d, 0, 0, Math.PI * 2);

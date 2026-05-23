@@ -3,13 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=green-moss-v2" />
+    <link rel="stylesheet" href="style.css?v=green-moss-v3" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gantari:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="favicon r.svg">
     <style>
+      .terrarium-hero {
+        position: relative;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .terrarium-splat-stack {
+        z-index: 5;
+        line-height: 0;
+        order: 2;
+        --splat-embed-height: min(85vh, 920px);
+      }
+      @media (min-width: 768px) {
+        .terrarium-splat-stack {
+          --splat-embed-height: min(92vh, 1000px);
+        }
+      }
       .terrarium-splat-hero {
         width: 100%;
         margin: 0;
@@ -35,6 +52,75 @@
           min-height: 680px;
         }
       }
+      @media (max-width: 767px) {
+        .terrarium-splat-embed {
+          pointer-events: none;
+        }
+      }
+      .terrarium-copy {
+        position: relative;
+        z-index: 20;
+        pointer-events: none;
+        margin: 0;
+        padding: 0 1.35rem;
+        max-width: 34ch;
+        font-family: "Gantari", "Karla", sans-serif;
+        font-size: clamp(0.95rem, 2.6vw, 1.1rem);
+        font-weight: 300;
+        line-height: 1.65;
+        color: #a0a0a0;
+        text-align: left;
+      }
+      .terrarium-copy--intro {
+        order: 1;
+        padding-top: 2.25rem;
+        padding-bottom: 0.25rem;
+        margin-bottom: -10vh;
+      }
+      .terrarium-splat-stack .terrarium-copy--build {
+        display: block;
+        line-height: 1.65;
+      }
+      .terrarium-copy--build {
+        position: absolute;
+        z-index: 20;
+        align-self: flex-end;
+        max-width: 30ch;
+        top: calc(100svh - 4.75rem);
+        right: 0;
+        left: auto;
+        margin: 0;
+        padding: 0 clamp(1rem, 4vw, 1.5rem) 0 0;
+      }
+      .terrarium-splat-hero--02 {
+        margin-top: 5.5rem;
+      }
+      .terrarium-hero-inner {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
+      @media (min-width: 900px) {
+        .terrarium-hero-inner {
+          display: block;
+        }
+        .terrarium-copy--intro {
+          position: absolute;
+          left: clamp(20px, 5vw, 72px);
+          top: 7%;
+          width: min(34ch, 38vw);
+          padding: 0;
+          margin: 0;
+        }
+        .terrarium-copy--build {
+          right: clamp(20px, 4vw, 64px);
+          width: min(30ch, 32vw);
+          padding: 0;
+        }
+        .terrarium-splat-stack {
+          margin-bottom: 0;
+        }
+      }
     </style>
 </head>
 <body class="project-page dark-moss-theme">
@@ -42,30 +128,36 @@
     <div id="overlay">
         <canvas id="cursorCanvas" aria-hidden="true"></canvas>
         <a href="index.html" class="project-back">Ross Rudolph</a>
-        <div class="terrarium-splat-hero">
-            <iframe
-                class="terrarium-splat-embed"
-                src="assets/gs_Unit01.html?noui&amp;nofx"
-                title="3D Terrarium Unit 01 — interactive 3D view"
-                allow="autoplay; fullscreen; xr-spatial-tracking"
-            ></iframe>
-        </div>
-        <div class="terrarium-splat-hero">
-            <iframe
-                class="terrarium-splat-embed"
-                src="assets/gs_Unit02.2.html?noui&amp;nofx"
-                title="3D Terrarium Unit 02 — interactive 3D view"
-                allow="autoplay; fullscreen; xr-spatial-tracking"
-            ></iframe>
-        </div>
+        <section class="terrarium-hero" aria-label="Terrarium 3D views">
+            <div class="terrarium-hero-inner">
+                <p class="terrarium-copy terrarium-copy--intro">Stewarding terrariums connects me intimately to living ecosystems. Playing the role of a curious, benevolent god, I explore and fine-tune the profoundly complex interrelationships between water, air, light, and earth to allow life to thrive.</p>
+                <div class="terrarium-splat-stack">
+                    <div class="terrarium-splat-hero terrarium-splat-hero--01">
+                        <iframe
+                            class="terrarium-splat-embed"
+                            src="assets/gs_Unit01.html?noui&amp;nofx"
+                            title="3D Terrarium Unit 01 — interactive 3D view"
+                            allow="autoplay; fullscreen; xr-spatial-tracking"
+                        ></iframe>
+                    </div>
+                    <p class="terrarium-copy terrarium-copy--build">I build my own to have more control over the form and functionality using a stained glass technique and reclaimed materials.</p>
+                    <div class="terrarium-splat-hero terrarium-splat-hero--02">
+                        <iframe
+                            class="terrarium-splat-embed"
+                            src="assets/gs_Unit02.2.html?noui&amp;nofx"
+                            title="3D Terrarium Unit 02 — interactive 3D view"
+                            allow="autoplay; fullscreen; xr-spatial-tracking"
+                        ></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
         <div class="project-content">
             <div class="project-gallery">
-                <p class="project-text" style="background: rgba(13, 37, 22, 0.68);">Caring for terrariums allows me to feel closely connected to a living ecosystem and continues to teach me about the profoundly complex interrelationship between water, air, light, and earth. <br><br> Since I struggled to find an appropriate tank that opened from the front — which i feel is very important to connecting with them — i decided to make my own with reclaimed glass and a stained glass assembly technique.</p>
                 <img src="assets/mossidex2.png" alt="Terrarium build">
-                <!-- <img src="assets/unit02 bg deleted.png" alt="Terrarium build" style="max-width: 800px; height: auto; margin: auto"> -->
             </div>
         </div>
     </div>
-    <script src="background-sketch-green.js?v=green-moss-v2"></script>
+    <script src="background-sketch-green.js?v=green-moss-v3"></script>
 </body>
 </html>
