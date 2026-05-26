@@ -52,33 +52,6 @@
           min-height: 680px;
         }
       }
-      @media (max-width: 767px) {
-        .terrarium-hero,
-        .terrarium-splat-stack {
-          touch-action: pan-y;
-        }
-        .terrarium-splat-hero {
-          position: relative;
-        }
-        .terrarium-splat-embed {
-          pointer-events: none !important;
-        }
-        .terrarium-splat-scroll-shield {
-          position: absolute;
-          inset: 0;
-          z-index: 12;
-          display: block;
-          pointer-events: auto;
-          touch-action: pan-y;
-          -webkit-user-select: none;
-          user-select: none;
-        }
-      }
-      @media (min-width: 768px) {
-        .terrarium-splat-scroll-shield {
-          display: none;
-        }
-      }
       .terrarium-copy {
         position: relative;
         z-index: 20;
@@ -98,11 +71,6 @@
         padding-top: 2.25rem;
         padding-bottom: 0.25rem;
         margin-bottom: -10vh;
-      }
-      @media (max-width: 767px) {
-        .terrarium-copy--intro {
-          padding-top: 5.5rem;
-        }
       }
       .terrarium-splat-stack .terrarium-copy--build {
         display: block;
@@ -127,6 +95,60 @@
         display: flex;
         flex-direction: column;
       }
+
+      /* Mobile: native page scroll + tighter layout between copy and splat 2 */
+      @media (max-width: 767px) {
+        body.terrarium-page.project-page {
+          overflow-y: auto !important;
+          overflow-x: hidden;
+          height: auto !important;
+          min-height: 100%;
+          -webkit-overflow-scrolling: touch;
+        }
+        body.terrarium-page.project-page #overlay {
+          position: relative !important;
+          inset: auto !important;
+          overflow: visible !important;
+          height: auto !important;
+          min-height: 100vh;
+        }
+        body.terrarium-page #cursorCanvas {
+          display: none;
+        }
+        body.terrarium-page {
+          cursor: auto !important;
+        }
+        .terrarium-copy--intro {
+          padding-top: 5.5rem;
+        }
+        .terrarium-splat-embed {
+          height: min(72vh, 640px);
+          min-height: 420px;
+          pointer-events: none !important;
+        }
+        .terrarium-splat-stack {
+          --splat-embed-height: min(72vh, 640px);
+        }
+        .terrarium-splat-hero,
+        .terrarium-splat-embed {
+          pointer-events: none !important;
+        }
+        .terrarium-copy--build {
+          position: relative;
+          top: auto;
+          right: auto;
+          left: auto;
+          align-self: flex-end;
+          order: 3;
+          max-width: 78%;
+          margin: -4vh 0 0.35rem;
+          padding: 0 1.35rem 0 0;
+        }
+        .terrarium-splat-hero--02 {
+          margin-top: 0;
+        }
+      }
+
       @media (min-width: 900px) {
         .terrarium-hero-inner {
           display: block;
@@ -150,7 +172,7 @@
       }
     </style>
 </head>
-<body class="project-page dark-moss-theme">
+<body class="project-page dark-moss-theme terrarium-page">
     <canvas id="myCanvas"></canvas>
     <div id="overlay">
         <canvas id="cursorCanvas" aria-hidden="true"></canvas>
@@ -167,7 +189,6 @@
                             allow="autoplay; fullscreen; xr-spatial-tracking"
                             tabindex="-1"
                         ></iframe>
-                        <div class="terrarium-splat-scroll-shield" aria-hidden="true"></div>
                     </div>
                     <p class="terrarium-copy terrarium-copy--build">I build my own to have more control over the form and functionality using a stained glass technique and reclaimed materials.</p>
                     <div class="terrarium-splat-hero terrarium-splat-hero--02">
@@ -178,7 +199,6 @@
                             allow="autoplay; fullscreen; xr-spatial-tracking"
                             tabindex="-1"
                         ></iframe>
-                        <div class="terrarium-splat-scroll-shield" aria-hidden="true"></div>
                     </div>
                 </div>
             </div>
@@ -190,38 +210,5 @@
         </div>
     </div>
     <script src="background-sketch-green.js?v=green-moss-v3"></script>
-    <script>
-      (function () {
-        const overlay = document.getElementById('overlay');
-        const mq = window.matchMedia('(max-width: 767px)');
-        if (!overlay || !mq.matches) return;
-
-        let activeTouch = null;
-
-        function onTouchStart(e) {
-          if (e.touches.length !== 1) return;
-          activeTouch = { y: e.touches[0].clientY };
-        }
-
-        function onTouchMove(e) {
-          if (!activeTouch || e.touches.length !== 1) return;
-          const y = e.touches[0].clientY;
-          overlay.scrollTop += activeTouch.y - y;
-          activeTouch.y = y;
-          e.preventDefault();
-        }
-
-        function onTouchEnd() {
-          activeTouch = null;
-        }
-
-        document.querySelectorAll('.terrarium-splat-scroll-shield').forEach((shield) => {
-          shield.addEventListener('touchstart', onTouchStart, { passive: true });
-          shield.addEventListener('touchmove', onTouchMove, { passive: false });
-          shield.addEventListener('touchend', onTouchEnd, { passive: true });
-          shield.addEventListener('touchcancel', onTouchEnd, { passive: true });
-        });
-      })();
-    </script>
 </body>
 </html>
