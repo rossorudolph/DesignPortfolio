@@ -96,7 +96,7 @@
         flex-direction: column;
       }
 
-      /* Mobile layout + let touches pass through splats to scroll #overlay */
+      /* Mobile layout + native scroll via touch layers over splats */
       @media (max-width: 767px) {
         body.terrarium-page #myCanvas,
         body.terrarium-page #cursorCanvas {
@@ -109,8 +109,12 @@
           cursor: auto !important;
         }
         body.terrarium-page.project-page #overlay {
-          touch-action: pan-y;
+          -webkit-overflow-scrolling: touch;
           overscroll-behavior-y: contain;
+          touch-action: pan-y;
+        }
+        body.terrarium-page .terrarium-splat-embed {
+          pointer-events: none !important;
         }
         .terrarium-copy--intro {
           padding-top: 5.5rem;
@@ -125,15 +129,13 @@
         .terrarium-splat-hero {
           position: relative;
         }
-        .terrarium-splat-hero,
-        .terrarium-splat-embed {
-          pointer-events: none !important;
-        }
         .terrarium-splat-touch-layer {
           position: absolute;
           inset: 0;
           z-index: 8;
+          pointer-events: auto;
           touch-action: pan-y;
+          background: transparent;
         }
         .terrarium-copy--build {
           position: relative;
@@ -214,58 +216,5 @@
         </div>
     </div>
     <script src="background-sketch-green.js?v=green-moss-v3"></script>
-    <script>
-      (function () {
-        const mq = window.matchMedia('(max-width: 767px)');
-
-        function bindTerrariumTouchScroll() {
-          const overlay = document.getElementById('overlay');
-          if (!overlay || !document.body.classList.contains('terrarium-page')) return null;
-
-          let touch = null;
-
-          function onStart(e) {
-            if (e.target.closest('a, button, input, textarea, select')) return;
-            if (e.touches.length !== 1) return;
-            touch = { y: e.touches[0].clientY, id: e.touches[0].identifier };
-          }
-
-          function onMove(e) {
-            if (!touch || e.touches.length !== 1) return;
-            const t = Array.from(e.touches).find((x) => x.identifier === touch.id);
-            if (!t) return;
-            const dy = touch.y - t.clientY;
-            if (dy !== 0) overlay.scrollTop += dy;
-            touch.y = t.clientY;
-            e.preventDefault();
-          }
-
-          function onEnd(e) {
-            if (!touch) return;
-            const stillDown = Array.from(e.touches).some((x) => x.identifier === touch.id);
-            if (!stillDown) touch = null;
-          }
-
-          overlay.addEventListener('touchstart', onStart, { passive: true });
-          overlay.addEventListener('touchmove', onMove, { passive: false });
-          overlay.addEventListener('touchend', onEnd, { passive: true });
-          overlay.addEventListener('touchcancel', onEnd, { passive: true });
-
-          return function cleanup() {
-            overlay.removeEventListener('touchstart', onStart);
-            overlay.removeEventListener('touchmove', onMove);
-            overlay.removeEventListener('touchend', onEnd);
-            overlay.removeEventListener('touchcancel', onEnd);
-          };
-        }
-
-        let cleanup = mq.matches ? bindTerrariumTouchScroll() : null;
-
-        mq.addEventListener('change', (e) => {
-          if (cleanup) cleanup();
-          cleanup = e.matches ? bindTerrariumTouchScroll() : null;
-        });
-      })();
-    </script>
 </body>
 </html>
