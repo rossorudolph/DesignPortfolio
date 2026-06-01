@@ -151,6 +151,136 @@ canvas {
   background: #302a8f;
 }
 
+/* Home page — live terrarium moisture (unit 03) */
+.unit03-widget {
+  --unit03-text: #a0a0a0;
+  --unit03-line: rgba(160, 160, 160, 0.28);
+  --unit03-graph: rgba(143, 168, 150, 0.88);
+  --unit03-top: 5vh;
+  --unit03-inset: 60px;
+  --unit03-text-gap: 0.26rem;
+  --unit03-edge-pad: 0.18rem;
+
+  position: fixed;
+  top: var(--unit03-top);
+  right: var(--unit03-inset);
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  width: 238px;
+  max-width: calc(100vw - 2 * var(--unit03-inset));
+  font-size: 0.65rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--unit03-line);
+  text-decoration: none;
+  color: var(--unit03-text);
+  font-family: "Gantari", "Karla", sans-serif;
+  font-weight: 400;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+
+.unit03-widget:hover {
+  border-color: rgba(160, 160, 160, 0.42);
+}
+
+.unit03-widget.is-stale {
+  opacity: 0.55;
+}
+
+.unit03-row {
+  display: grid;
+  width: 100%;
+}
+
+/* Top split shifted right: wider chart, narrower values */
+.unit03-row--top {
+  grid-template-columns: minmax(0, 1.42fr) minmax(52px, 0.58fr);
+  border-bottom: 1px solid var(--unit03-line);
+}
+
+/* Bottom split shifted left: narrow 24 hr, wide label */
+.unit03-row--bottom {
+  grid-template-columns: max-content minmax(0, 1fr);
+}
+
+.unit03-panel {
+  padding: 0.28rem 0.4rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.unit03-row--top .unit03-panel--chart {
+  border-right: 1px solid var(--unit03-line);
+  display: flex;
+  align-items: stretch;
+  padding: var(--unit03-edge-pad) 0.4rem;
+}
+
+.unit03-row--top .unit03-panel--values {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: var(--unit03-text-gap);
+  padding: var(--unit03-edge-pad) 0.4rem calc(var(--unit03-text-gap) * 0.5) 0.35rem;
+  line-height: 1;
+}
+
+.unit03-row--bottom .unit03-panel {
+  padding: calc(var(--unit03-text-gap) * 0.5) 0.4rem var(--unit03-edge-pad);
+  line-height: 1;
+}
+
+.unit03-row--bottom .unit03-panel--range {
+  border-right: 1px solid var(--unit03-line);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  min-width: max-content;
+  padding-right: 0.55rem;
+}
+
+.unit03-row--bottom .unit03-panel--label {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding-left: 0.45rem;
+}
+
+.unit03-spark {
+  width: 100%;
+  height: 32px;
+  flex: 1;
+}
+
+.unit03-spark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.unit03-val,
+.unit03-voltage {
+  font-size: inherit;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: inherit;
+}
+
+.unit03-widget.is-offline {
+  opacity: 0.5;
+}
+
 /* Main page: mobile — center bio box, breathing room, slightly larger text, top-aligned */
 @media (max-width: 640px) {
   .main-bio {
@@ -168,6 +298,10 @@ canvas {
   .main-bio-text {
     font-size: 0.95rem;
     line-height: 1.65;
+  }
+
+  .unit03-widget {
+    width: min(238px, calc(100vw - 2 * var(--unit03-inset)));
   }
 }
 
