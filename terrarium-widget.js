@@ -7,9 +7,9 @@
   const GIST_ID = '5c91c7daad303e56223b83657721515d';
   const REFRESH_MS = 60_000;
   const STALE_AFTER_S = 300;
-  const MARKER_STROKE = 'rgba(130, 155, 138, 0.38)';
-  const GRAPH_STROKE = 'rgba(143, 168, 150, 0.88)';
-  const GRAPH_FILL = 'rgba(143, 168, 150, 0.16)';
+  const MARKER_STROKE = 'rgba(61, 79, 61, 0.38)';
+  const GRAPH_STROKE = 'rgba(61, 79, 61, 0.88)';
+  const GRAPH_FILL = 'rgba(61, 79, 61, 0.16)';
 
   const $widget = document.getElementById('unit03-widget');
   if (!$widget) return;
@@ -17,26 +17,8 @@
   const $val = document.getElementById('unit03-val');
   const $voltage = document.getElementById('unit03-voltage');
   const $spark = document.getElementById('unit03-spark');
-  const $bio = document.getElementById('main-bio');
 
-  function alignWidgetToBio() {
-    if (!$bio) return;
-    const r = $bio.getBoundingClientRect();
-    $widget.style.setProperty('--unit03-top', `${r.top}px`);
-    $widget.style.setProperty('--unit03-inset', `${Math.round(r.left)}px`);
-  }
-
-  alignWidgetToBio();
-  window.addEventListener('resize', alignWidgetToBio);
-  window.addEventListener('load', alignWidgetToBio);
-  if (document.fonts?.ready) {
-    document.fonts.ready.then(alignWidgetToBio);
-  }
-  if ($bio && typeof ResizeObserver !== 'undefined') {
-    const ro = new ResizeObserver(alignWidgetToBio);
-    ro.observe($bio);
-  }
-  requestAnimationFrame(alignWidgetToBio);
+  // Chart sits fixed top-right (CSS --unit03-top / --unit03-inset); do not pin to bio.
 
   function renderSparkline(history, events) {
     if (!history || history.length < 2) {
@@ -113,8 +95,6 @@
     if (age > STALE_AFTER_S) {
       $widget.classList.add('is-stale');
     }
-
-    alignWidgetToBio();
   }
 
   function showError() {

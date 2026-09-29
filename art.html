@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=green-moss-v2" />
+    <link rel="stylesheet" href="style.css?v=gray-field-v4" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
@@ -18,12 +18,21 @@
         <canvas id="cursorCanvas" aria-hidden="true"></canvas>
         <a href="index.html" class="project-back">Ross Rudolph</a>
         <div class="content-wrapper project-content">
+        <header class="art-page-header">
+          <h1 class="art-page-title">Tech</h1>
+          <nav class="art-project-tabs" aria-label="Projects">
+            <a href="#god-image" class="art-project-tab">God Image</a>
+            <a href="#trance-decay" class="art-project-tab">Trance Decay</a>
+          </nav>
+        </header>
+
+        <section id="god-image" class="art-project" aria-labelledby="god-image-heading">
         <div class="bodycontainer">
           <div class="column" id="column1">
             <img src="assets/god image logo.png" alt="God Image" style="width: 40%; max-width: 100px;">
           </div>
           <div class="column" id="column2">
-              <h2>God Image</h2>
+              <h2 id="god-image-heading">God Image</h2>
               <p>
                 Exhibited at Gray Area Theatre <br>
                 San Francisco, July 2024.
@@ -144,10 +153,54 @@
                 </div>
               </div>
             </div>
+        </section>
+
+        <section id="trance-decay" class="art-project art-project--placeholder" aria-labelledby="trance-decay-heading">
+          <div class="bodycontainer">
+            <h2 id="trance-decay-heading">Trance Decay</h2>
+          </div>
+        </section>
 
         </div>
         </div>
     </div>
-    <script src="background-sketch-green.js?v=green-moss-v3"></script>
+    <script src="background-sketch-green.js?v=gray-field-v2"></script>
+    <script>
+      (function () {
+        const overlay = document.getElementById('overlay');
+        const tabs = document.querySelectorAll('.art-project-tab');
+        if (!overlay || !tabs.length) return;
+
+        function setActive(hash) {
+          tabs.forEach((tab) => {
+            tab.classList.toggle('is-active', tab.getAttribute('href') === hash);
+          });
+        }
+
+        function scrollToHash(hash) {
+          if (!hash || hash === '#') return;
+          const target = document.querySelector(hash);
+          if (!target) return;
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setActive(hash);
+        }
+
+        tabs.forEach((tab) => {
+          tab.addEventListener('click', (e) => {
+            const hash = tab.getAttribute('href');
+            if (!hash || hash.charAt(0) !== '#') return;
+            e.preventDefault();
+            history.pushState(null, '', hash);
+            scrollToHash(hash);
+          });
+        });
+
+        if (location.hash) {
+          requestAnimationFrame(() => scrollToHash(location.hash));
+        } else {
+          setActive('#god-image');
+        }
+      })();
+    </script>
 </body>
 </html>

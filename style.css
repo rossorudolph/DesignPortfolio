@@ -3,7 +3,7 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-y: auto;
-  background: #0d2516;
+  background: #b7b7b5;
   cursor: none; /* Hide default cursor for custom smiley face */
 }
 
@@ -28,7 +28,223 @@ canvas {
 }
 
 #myCanvas {
-  background: #0d2516;
+  background: #b7b7b5;
+}
+
+/* Homepage — mid gray field matching the 3D scene */
+body.home {
+  background: #b7b7b5;
+}
+
+body.home #myCanvas {
+  background: #b7b7b5;
+}
+
+body.home .bloom-overlay {
+  background: radial-gradient(
+    ellipse 85% 55% at 50% 30%,
+    rgba(220, 220, 218, 0.12) 0%,
+    rgba(200, 200, 198, 0.05) 45%,
+    rgba(180, 180, 178, 0) 72%
+  );
+}
+
+/* Homepage chrome — muted olive matching screenshot menu/chart */
+body.home {
+  --home-ink: #3d4f3d;
+  --home-ink-soft: #5a6b5a;
+  --home-inset: 60px;
+  --home-menu-top: 5vh;
+  --home-menu-height: 13.5rem; /* five bordered rows */
+  --home-worked-bottom: 56px;
+  --home-worked-height: 5rem;
+}
+
+.home-title {
+  position: fixed;
+  top: 4.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 22;
+  pointer-events: none;
+}
+
+.home-title-name {
+  margin: 0;
+  font-family: "Karla", "Gantari", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--home-ink);
+  white-space: nowrap;
+}
+
+.home-title-sub {
+  margin: 0.15rem 0 0;
+  font-family: "Karla", "Gantari", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--home-ink-soft);
+  white-space: nowrap;
+}
+
+.home-menu {
+  position: fixed;
+  top: var(--home-menu-top);
+  left: var(--home-inset);
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: min(220px, calc(100vw - 120px));
+  pointer-events: auto;
+}
+
+.home-menu-btn {
+  display: block;
+  padding: 0.55rem 0.75rem;
+  margin: 0;
+  border: 1px solid rgba(61, 79, 61, 0.45);
+  border-bottom-width: 0;
+  background: transparent;
+  color: var(--home-ink);
+  font-family: "Karla", "Gantari", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.3;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.home-menu-btn:last-child {
+  border-bottom-width: 1px;
+}
+
+.home-menu-btn:hover {
+  background: rgba(61, 79, 61, 0.12);
+}
+
+.home-worked-with {
+  position: fixed;
+  bottom: var(--home-worked-bottom);
+  left: var(--home-inset);
+  z-index: 22;
+  pointer-events: none;
+  max-width: min(520px, calc(100vw - 2 * var(--home-inset)));
+}
+
+.home-worked-title {
+  margin: 0 0 0.65rem;
+  font-family: "Karla", "Gantari", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--home-ink);
+}
+
+.home-worked-logos {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-worked-logos li {
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+.home-worked-logo {
+  display: block;
+  height: 1.35rem;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+  /* White transparent marks → dark ink on the mid-gray field */
+  filter: brightness(0) saturate(100%) opacity(0.62);
+}
+
+/* Bio: pinned just above “Who I’ve worked with” */
+body.home .main-bio {
+  top: auto;
+  bottom: calc(var(--home-worked-bottom) + var(--home-worked-height) + 1.15rem);
+  left: var(--home-inset);
+  transform: none;
+  max-width: 42ch;
+  min-width: 0;
+  width: min(42ch, calc(100vw - 2 * var(--home-inset)));
+  max-height: none;
+  height: auto;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+}
+
+body.home .main-bio-text {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--home-ink-soft);
+  text-align: left;
+}
+
+body.home .bio-link {
+  color: var(--home-ink);
+  background: transparent;
+  padding: 0;
+  text-decoration: underline;
+}
+
+body.home .bio-link:hover {
+  background: transparent;
+  color: var(--home-ink);
+  opacity: 0.75;
+}
+
+body.home .bio-link strong {
+  font-weight: 600;
+}
+
+/* Unit 03 chart — same light outline as menu buttons */
+body.home .unit03-widget {
+  --unit03-text: var(--home-ink);
+  --unit03-line: rgba(61, 79, 61, 0.45);
+  --unit03-graph: rgba(61, 79, 61, 0.88);
+}
+
+body.home .unit03-widget:hover {
+  border-color: rgba(61, 79, 61, 0.65);
+}
+
+@media (max-width: 720px) {
+  body.home {
+    --home-inset: 24px;
+    --home-menu-top: 12vh;
+    --home-menu-height: 12.5rem;
+    --home-worked-bottom: 48px;
+  }
+
+  .home-menu {
+    width: min(180px, calc(100vw - 48px));
+  }
+
+  .home-title {
+    top: 2.5vh;
+  }
+
+  .home-title-name {
+    font-size: 1.1rem;
+  }
+
+  body.home .main-bio {
+    width: calc(100vw - 2 * var(--home-inset));
+    max-width: none;
+  }
 }
 
 #overlay {
@@ -353,6 +569,57 @@ canvas {
   height: 100%;
 }
 
+/* Art / Tech page — project tabs under title */
+.art-page-header {
+  margin: 0 0 1.75rem;
+  padding: 0 0 0.25rem;
+}
+
+.art-page-title {
+  margin: 0 0 0.85rem;
+  font-family: "Gantari", "Karla", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: inherit;
+}
+
+.art-project-tabs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.25rem;
+  margin: 0;
+  padding: 0;
+}
+
+.art-project-tab {
+  font-family: "Gantari", "Karla", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.72;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0.1rem;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+  pointer-events: auto;
+}
+
+.art-project-tab:hover,
+.art-project-tab.is-active {
+  opacity: 1;
+  border-bottom-color: currentColor;
+}
+
+.art-project {
+  scroll-margin-top: 1.25rem;
+}
+
+.art-project--placeholder {
+  min-height: 40vh;
+  padding-top: 1rem;
+}
+
 /* Add this to your style.css if you want a seamless look */
 iframe {
   filter: grayscale(0.2) contrast(1.1); /* Subtle artistic tweak */
@@ -377,24 +644,24 @@ iframe {
   display: none;
 }
 
-/* Dark green + gray type variant for selected project pages */
+/* Project pages: gray field matching homepage (class name kept for existing markup) */
 .project-page.dark-moss-theme #overlay {
-  color: #888888;
+  color: #3d4f3d;
 }
 
 .project-page.dark-moss-theme .project-back {
-  color: #888888;
+  color: #3d4f3d;
 }
 
 .project-page.dark-moss-theme .project-back:hover {
-  color: #a0a0a0;
+  color: #2a382a;
 }
 
 .project-page.dark-moss-theme .bodycontainer,
 .project-page.dark-moss-theme .bodycontainer2,
 .project-page.dark-moss-theme .project-card {
-  background: rgba(13, 37, 22, 0.72);
-  border: 1px solid rgba(136, 136, 136, 0.55);
+  background: rgba(183, 183, 181, 0.55);
+  border: 1px solid rgba(61, 79, 61, 0.35);
   box-shadow: none;
 }
 
@@ -403,7 +670,7 @@ iframe {
 .project-page.dark-moss-theme h3,
 .project-page.dark-moss-theme h4,
 .project-page.dark-moss-theme h5 {
-  color: #888888;
+  color: #3d4f3d;
 }
 
 .project-page,

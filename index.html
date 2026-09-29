@@ -3,7 +3,7 @@
 <head>
    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="style.css?v=3d-moss-v10" />
+      <link rel="stylesheet" href="style.css?v=gray-field-v4" />
       
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,17 +13,47 @@
     <link href="https://fonts.googleapis.com/css2?family=Gantari:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
    <link rel="icon" type="image/svg+xml" href="favicon r.svg">
 </head>
-<body>
+<body class="home">
     <canvas id="myCanvas"></canvas>
     <!-- Comment out the next line to disable bloom overlay (e.g. for lag testing) -->
     <div class="bloom-overlay" aria-hidden="true"></div>
     <div id="overlay">
         <canvas id="cursorCanvas" aria-hidden="true"></canvas>
+
+        <header class="home-title">
+            <h1 class="home-title-name">Ross Rudolph</h1>
+            <p class="home-title-sub">Living Systems Design</p>
+        </header>
+
+        <nav class="home-menu" aria-label="Projects">
+            <a href="xtbg.html" class="home-menu-btn">XTBG</a>
+            <a href="conservatory.html" class="home-menu-btn">Conservatory of Flowers</a>
+            <a href="terrarium.html" class="home-menu-btn">Terrarium</a>
+            <a href="landscapedesignwork.html" class="home-menu-btn">Residential</a>
+            <a href="art.html" class="home-menu-btn">Tech</a>
+        </nav>
+
         <div class="main-bio" id="main-bio">
             <p class="main-bio-text">
-                Hey, I'm Ross Rudolph. I make things in order to cope and get closer to god through nature, which is currently coming out through <a href="terrarium.html" class="bio-link">terrariums</a>. Here in sf, I work with <a href="landscapedesignwork.html" class="bio-link">the land</a> while studying horticulture and serving public good at <a href="farm-project/farmhome.html" class="bio-link">Alemany Farm</a>, the Conservatory of Flowers, and the Jung Institute. I explore how tech can be used for ritual through my interactive pieces <a href="art.html" class="bio-link">'god image'</a> and <a href="https://trance-decay.vercel.app/" class="bio-link">'trance decay,'</a> which exhibited at Gray Area. Deeply disturbed by the state of our society, I have stepped away from participating in <a href="https://rossorudolph.wixsite.com/ross-rudolph-design" class="bio-link" target="_blank" rel="noopener">product design</a> for now.
+                I create living systems in order to get closer to god; creating terrariums and landscapes with the intention of invoking wonder of the natural world. I’m continuously learning, studying, and looking forward to connecting with like-minded people. I have a tense relationship with technology that I explore through interactive installations. I have stepped away from participating in the current product design industry.
             </p>
         </div>
+
+        <aside class="home-worked-with">
+            <h2 class="home-worked-title">Who I've worked with</h2>
+            <ul class="home-worked-logos">
+                <li>
+                    <img class="home-worked-logo" src="assets/xtbg-white-transparent.png" alt="XTBG" />
+                </li>
+                <li>
+                    <img class="home-worked-logo" src="assets/gray-area-white-transparent.png" alt="Gray Area" />
+                </li>
+                <li>
+                    <img class="home-worked-logo" src="assets/gggp_logo.png" alt="Golden Gate National Parks Conservancy" />
+                </li>
+            </ul>
+        </aside>
+
         <a href="terrarium.html" class="unit03-widget" id="unit03-widget" aria-label="Terrarium unit 03 — live soil moisture">
             <div class="unit03-row unit03-row--top">
                 <div class="unit03-panel unit03-panel--chart">
@@ -45,9 +75,11 @@
     <!-- 2D (original): uncomment below, comment out 3D block -->
     <!-- <script src="psychedelic-landscape-sketch.js"></script> -->
     <!-- 3D (test): uncomment below, comment out 2D line -->
-    <script type="module" src="psychedelic-landscape-sketch-3d.js?v=3d-moss-v3"></script>
+    <script type="module" src="psychedelic-landscape-sketch-3d.js?v=gray-field-v3"></script>
     <script src="word-wrap-no-break.js"></script>
+    <!-- Glitch text paused for now
     <script src="glitch-text.js"></script>
-    <script src="terrarium-widget.js"></script>
+    -->
+    <script src="terrarium-widget.js?v=gray-field-v1"></script>
 </body>
 </html>

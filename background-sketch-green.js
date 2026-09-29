@@ -1,12 +1,14 @@
 // background-sketch-green.js
-// Dark green variant of the floating orb background sketch for project pages.
+// Gray-field floating orb background for project pages (matches homepage).
 
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
+const FIELD_GRAY = '#b7b7b5';
 const BASE_CIRCLE_COUNT = 10;
 const REFERENCE_AREA = 1440 * 900;
-const SPHERE_ALPHA = 0.032 * 0.2;
+// Soft lighter orbs on mid-gray — keep visible without the dark-theme dimming
+const SPHERE_ALPHA = 0.09;
 
 let circles = [];
 let width, height;
@@ -74,7 +76,8 @@ class Circle {
         for (let d = this.radius + this.feather; d > this.radius; d -= 2) {
             let inter = (d - this.radius) / this.feather;
             let alpha = (1 - inter) * SPHERE_ALPHA;
-            ctx.fillStyle = `rgba(188, 210, 190, ${alpha})`;
+            // Soft light orbs on gray field
+            ctx.fillStyle = `rgba(245, 245, 242, ${alpha})`;
             ctx.beginPath();
             ctx.ellipse(this.x, this.y, d, d, 0, 0, Math.PI * 2);
             ctx.fill();
@@ -123,7 +126,7 @@ function drawSmiley() {
 }
 
 function draw() {
-    ctx.fillStyle = '#0d2516';
+    ctx.fillStyle = FIELD_GRAY;
     ctx.fillRect(0, 0, width, height);
 
     for (let circle of circles) {

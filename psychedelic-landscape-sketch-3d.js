@@ -22,21 +22,23 @@ if (!canvas) {
     const tempLocal = new THREE.Vector3();
     const _mothDesired = new THREE.Vector3();
 
+    // Light muted sage — visibly green on the gray field, still low-contrast
     const STEM_COLORS = [
-        { r: 224, g: 232, b: 222 },
-        { r: 214, g: 224, b: 212 },
-        { r: 232, g: 239, b: 230 },
-        { r: 200, g: 209, b: 201 },
+        { r: 148, g: 188, b: 140 },
+        { r: 138, g: 178, b: 132 },
+        { r: 158, g: 196, b: 148 },
+        { r: 130, g: 172, b: 126 },
     ];
     const BRANCH_COLORS = [
-        { r: 208, g: 220, b: 206 },
-        { r: 220, g: 231, b: 218 },
-        { r: 232, g: 240, b: 230 },
-        { r: 198, g: 212, b: 196 },
-        { r: 184, g: 196, b: 188 },
-        { r: 238, g: 244, b: 236 },
+        { r: 132, g: 178, b: 126 },
+        { r: 144, g: 188, b: 136 },
+        { r: 156, g: 198, b: 146 },
+        { r: 122, g: 168, b: 118 },
+        { r: 114, g: 160, b: 114 },
+        { r: 164, g: 204, b: 152 },
     ];
-    const DEAD_FROND_COLOR = new THREE.Color(0x4b4f52);
+    // Slightly darker than field gray (#b7b7b5) so collapsed fronds read as ash, not black
+    const DEAD_FROND_COLOR = new THREE.Color(0x9a9a98);
 
     function rgb(c) {
         return new THREE.Color(c.r / 255, c.g / 255, c.b / 255);
@@ -416,7 +418,7 @@ if (!canvas) {
         clump.position.set(x, -0.01, z);
 
         const needleMat = new THREE.MeshStandardMaterial({
-            color: 0xe7efe5,
+            color: 0xa8c89e,
             roughness: 0.88,
             metalness: 0.0,
         });
@@ -622,8 +624,10 @@ if (!canvas) {
 
     function initScene() {
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0d2516);
-        scene.fog = new THREE.Fog(0x0d2516, 1.8, 7.8);
+        // Mid gray field — low contrast with light sage foliage
+        const FIELD_GRAY = 0xb7b7b5;
+        scene.background = new THREE.Color(FIELD_GRAY);
+        scene.fog = new THREE.Fog(FIELD_GRAY, 1.8, 7.8);
 
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 60);
         camera.position.set(0, 0.96, 2.1);
@@ -635,7 +639,8 @@ if (!canvas) {
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        const hemi = new THREE.HemisphereLight(0xbfd2c3, 0x0d2516, 0.8);
+        // Neutral lights so green comes from plant materials, not the sky
+        const hemi = new THREE.HemisphereLight(0xd4d4d2, 0x8a8a88, 0.8);
         scene.add(hemi);
 
         const key = new THREE.DirectionalLight(0xffffff, 1.1);
@@ -651,7 +656,7 @@ if (!canvas) {
         key.shadow.bias = -0.00035;
         scene.add(key);
 
-        const fill = new THREE.DirectionalLight(0xd4e4d8, 0.5);
+        const fill = new THREE.DirectionalLight(0xc8c8c6, 0.5);
         fill.position.set(-1.7, 1.4, -1.2);
         scene.add(fill);
 
@@ -831,7 +836,7 @@ if (!canvas) {
             g.ttl -= 0.016;
             const x = Math.max(0, Math.min(1, g.x)) * w;
             ctx.save();
-            ctx.strokeStyle = g.flash ? `rgba(248, 252, 249, ${0.38 + Math.random() * 0.32})` : 'rgba(236, 242, 238, 0.35)';
+            ctx.strokeStyle = g.flash ? `rgba(72, 72, 70, ${0.42 + Math.random() * 0.28})` : 'rgba(90, 90, 88, 0.38)';
             ctx.lineWidth = g.px !== undefined ? g.px : 1;
             const segments = 4 + Math.floor(Math.random() * 4);
             for (let s = 0; s < segments; s++) {
