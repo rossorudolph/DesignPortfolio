@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=gray-field-v3" />
+    <link rel="stylesheet" href="style.css?v=gray-field-v5" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
@@ -11,20 +11,114 @@
     <link href="https://fonts.googleapis.com/css2?family=Gantari:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="favicon r.svg">
     <title>Conservatory of Flowers — Ross Rudolph</title>
+    <style>
+      .conservatory-page .bodycontainer {
+        align-items: flex-start;
+      }
+      .conservatory-page .conservatory-hero img,
+      .conservatory-page .conservatory-full img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .conservatory-page .conservatory-col-text {
+        flex: 1.05;
+        min-width: 0;
+      }
+      .conservatory-page .conservatory-col-text p {
+        margin: 0 0 1rem;
+      }
+      .conservatory-page .conservatory-col-text p:last-child {
+        margin-bottom: 0;
+      }
+      .conservatory-page .conservatory-col-photo {
+        flex: 0.95;
+        min-width: 0;
+      }
+      .conservatory-page .conservatory-col-narrow {
+        flex: 0.72;
+        min-width: 0;
+      }
+      .conservatory-page .conservatory-col-wide {
+        flex: 1.28;
+        min-width: 0;
+      }
+      .conservatory-page .conservatory-caption {
+        margin: 0.55rem 0 0;
+        font-size: 0.92em;
+        line-height: 1.45;
+      }
+      .conservatory-page h2 {
+        margin: 0.35rem 0 1.25rem;
+      }
+      @media (max-width: 768px) {
+        .conservatory-page .conservatory-col-narrow,
+        .conservatory-page .conservatory-col-wide,
+        .conservatory-page .conservatory-col-text,
+        .conservatory-page .conservatory-col-photo {
+          flex: 1 1 100%;
+          width: 100%;
+        }
+      }
+    </style>
 </head>
-<body class="project-page dark-moss-theme">
+<body class="project-page dark-moss-theme conservatory-page">
     <canvas id="myCanvas"></canvas>
     <div id="overlay">
         <canvas id="cursorCanvas" aria-hidden="true"></canvas>
         <a href="index.html" class="project-back">Ross Rudolph</a>
         <div class="content-wrapper project-content">
-            <div class="bodycontainer2">
+
+            <div class="bodycontainer2 conservatory-hero">
                 <div class="video-container">
-                    <img src="assets/IMG_2171.JPG" alt="Conservatory of Flowers">
+                    <img src="assets/IMG_1600.JPG" alt="Conservatory of Flowers">
                 </div>
                 <h2>Conservatory of Flowers</h2>
-                <p>Project page coming soon.</p>
             </div>
+
+            <div class="bodycontainer">
+                <div class="column conservatory-col-text">
+                    <p>I have spent nearly every Wednesday since June 2025 assisting Head Nursery Specialist Kristen Natoli in cultivating and maintaining the living plant collection at San Francisco's Conservatory of Flowers.</p>
+                    <p>My work has included a breadth of tasks from scrubbing the windows of algae to virus testing the rare orchid collection, though my primary focus has been on the design, build, and planting of new features within the Tropical Highlands gallery space.</p>
+                    <p>Here you can see me mounting on the dracula orchid vines.</p>
+                </div>
+                <div class="column conservatory-col-photo">
+                    <img src="assets/IMG_3277.jpeg" alt="Mounting dracula orchid vines">
+                </div>
+            </div>
+
+            <div class="bodycontainer2 conservatory-full">
+                <div class="video-container">
+                    <img src="assets/IMG_4193.JPG" alt="Tropical Highlands gallery planting">
+                </div>
+            </div>
+
+            <div class="bodycontainer">
+                <div class="column conservatory-col-narrow">
+                    <img src="assets/IMG_2031.JPG" alt="3D printed dracula orchid">
+                    <p class="conservatory-caption">3d printed dracula orchid to test with curators.</p>
+                </div>
+                <div class="column conservatory-col-wide">
+                    <img src="assets/IMG_1971.JPG" alt="Conservatory planting detail">
+                </div>
+            </div>
+
+            <div class="bodycontainer2 conservatory-full">
+                <div class="video-container">
+                    <img src="assets/IMG_2171.JPG" alt="Conservatory of Flowers gallery view">
+                </div>
+            </div>
+
+            <div class="bodycontainer">
+                <div class="column conservatory-col-narrow">
+                    <img src="assets/IMG_1470.JPG" alt="Rock feature for epiphyte and lithophyte collection">
+                    <p class="conservatory-caption">What used to be a barren wall is now a rock feature to better feature the epiphyte and lithophyte collection, planting ferns, philodendron, and begonia.</p>
+                </div>
+                <div class="column conservatory-col-wide">
+                    <img src="assets/IMG_1595.JPG" alt="Rock feature planting">
+                </div>
+            </div>
+
         </div>
     </div>
     <script src="background-sketch-green.js?v=gray-field-v2"></script>
