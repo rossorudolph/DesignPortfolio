@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=gray-field-v9" />
+    <link rel="stylesheet" href="style.css?v=gray-field-v19" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
@@ -22,7 +22,8 @@
         --xtbg-mac-max: 1440px;
         --xtbg-inset: clamp(3.5rem, 14vw, 10rem);
         --xtbg-gap: 8.5rem;
-        font-size: 19px;
+        --xtbg-video-w: 400px;
+        font-size: 21px;
       }
 
       /* Flat, borderless sections */
@@ -42,20 +43,20 @@
         left: 0;
       }
 
-      /* MacBook-oriented content width; bleed images can fill it */
+      /* Hero flush to top (behind fixed back link) */
       .xtbg-page .project-content {
         max-width: var(--xtbg-mac-max);
+        padding-top: 0;
         padding-left: 0;
         padding-right: 0;
       }
 
-      /* Shared left inset for left-aligned titles/copy
-         (must beat bodycontainer padding:0 when both classes share an element) */
+      /* Equal L/R inset for left text + right image layouts */
       .xtbg-page .xtbg-pad,
       .xtbg-page.project-page .bodycontainer.xtbg-pad,
       .xtbg-page.project-page .bodycontainer2.xtbg-pad {
         padding-left: var(--xtbg-inset);
-        padding-right: clamp(1.5rem, 5vw, 4rem);
+        padding-right: var(--xtbg-inset);
         box-sizing: border-box;
       }
 
@@ -72,7 +73,7 @@
         overflow: visible;
       }
 
-      .xtbg-page img:not(.xtbg-title-logo) {
+      .xtbg-page img:not(.xtbg-title-logo):not(.xtbg-sketch-logs) {
         width: 100%;
         max-width: 100%;
         height: auto;
@@ -83,12 +84,14 @@
 
       .xtbg-page p,
       .xtbg-page .xtbg-col-text p,
-      .xtbg-page .xtbg-lede {
-        font-size: 1.18rem;
+      .xtbg-page .xtbg-lede,
+      .xtbg-page .xtbg-herbal-desc,
+      .xtbg-page .xtbg-dpg-desc {
+        font-size: 1.22rem;
         line-height: 1.65;
+        font-weight: 500;
       }
 
-      /* Full-bleed media: edge-to-edge up to MacBook max */
       .xtbg-bleed {
         width: 100%;
         max-width: var(--xtbg-mac-max);
@@ -99,10 +102,12 @@
         width: 100%;
       }
 
-      /* Hero + coral title bar */
+      /* Hero + coral title bar — flush to top */
       .xtbg-hero {
         position: relative;
-        margin-bottom: var(--xtbg-gap) !important;
+        margin-top: 0 !important;
+        margin-bottom: 2.5rem !important;
+        z-index: 1;
       }
       .xtbg-hero-media {
         width: 100%;
@@ -111,7 +116,7 @@
       .xtbg-title-bar {
         position: absolute;
         left: 50%;
-        top: clamp(0.85rem, 2.2vw, 1.35rem);
+        top: 1.15rem;
         transform: translateX(-50%);
         width: min(92%, 1060px);
         min-height: clamp(7.5rem, 14vw, 10.5rem);
@@ -123,6 +128,7 @@
         background: var(--xtbg-coral);
         box-sizing: border-box;
         overflow: hidden;
+        z-index: 2;
       }
       .xtbg-page .xtbg-title-logo {
         flex: 0 1 auto;
@@ -148,7 +154,7 @@
         padding-bottom: 0.1rem;
       }
 
-      /* Dark rounded callouts */
+      /* Dark rounded callouts — horizontally centered */
       .xtbg-callout {
         max-width: 48rem;
         margin: 0.5rem auto var(--xtbg-gap);
@@ -157,7 +163,7 @@
         color: var(--xtbg-callout-text);
         border-radius: 2rem;
         text-align: left;
-        font-size: 1.22rem;
+        font-size: 1.28rem;
         line-height: 1.65;
       }
       .xtbg-callout p {
@@ -166,15 +172,19 @@
         font-size: inherit;
         line-height: inherit;
         text-align: left;
+        font-weight: 400;
       }
       .xtbg-callout strong {
         font-weight: 600;
       }
-      .xtbg-callout--narrow {
-        max-width: 22rem;
-        margin-left: 0;
-        margin-right: auto;
-        border-radius: 1.35rem;
+      .xtbg-callout--tight-above {
+        margin-top: 0.35rem;
+      }
+      .xtbg-bleed--tight-below {
+        margin-bottom: 1.25rem !important;
+      }
+      .xtbg-bleed--meander-above {
+        margin-bottom: 0.65rem !important;
       }
 
       .xtbg-col-text {
@@ -189,8 +199,8 @@
         margin-bottom: 0;
       }
       .xtbg-col-text--narrow {
-        flex: 0 1 24rem;
-        max-width: 24rem;
+        flex: 0 1 34rem;
+        max-width: 34rem;
       }
       .xtbg-col-media {
         flex: 1.15;
@@ -203,7 +213,7 @@
         flex: 1.25;
       }
 
-      /* Distinctive Plant Garden — major headline */
+      /* Distinctive Plant Garden */
       .xtbg-dpg {
         position: relative;
         display: flex;
@@ -215,8 +225,8 @@
         position: relative;
         z-index: 2;
         flex: 0 0 auto;
-        width: min(22rem, 34%);
-        max-width: 22rem;
+        width: min(32rem, 42%);
+        max-width: 32rem;
       }
       .xtbg-dpg-media {
         flex: 1 1 auto;
@@ -231,33 +241,65 @@
         color: var(--xtbg-coral) !important;
         line-height: 1.15;
       }
-      .xtbg-section-en {
+      /* Beat .xtbg-page p { font-size: 1.22rem } — mid size between small & large */
+      .xtbg-page p.xtbg-section-en {
         margin: 0.7rem 0 0.95rem;
-        font-size: clamp(2.35rem, 4.8vw, 3.25rem);
+        font-size: clamp(2.7rem, 5.2vw, 3.55rem) !important;
         font-weight: 500;
-        line-height: 1.15;
+        line-height: 1.1;
         color: var(--xtbg-coral) !important;
       }
       .xtbg-dpg-desc {
         max-width: 18rem;
       }
-      /* Rule between Chinese + English, spanning into the image */
       .xtbg-dpg .xtbg-section-rule {
         position: relative;
         z-index: 3;
         width: min(72vw, 46rem);
         max-width: none;
         height: 10px;
-        margin: 0 0 0;
+        margin: 0;
         background: var(--xtbg-coral);
         border: 0;
       }
 
-      /* Design + Build — major headline with top rule */
+      /* Sketch + logs: larger pair, still inset from page edges */
+      .xtbg-page.project-page .bodycontainer2.xtbg-sketch-stack {
+        position: relative;
+        width: min(88%, 1120px) !important;
+        max-width: 1120px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-bottom: 1.25rem !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        overflow: visible;
+      }
+      .xtbg-page.project-page .bodycontainer2 .xtbg-sketch-base {
+        width: 72% !important;
+        max-width: 72% !important;
+        display: block;
+        margin-left: 2% !important;
+        height: auto !important;
+      }
+      .xtbg-page.project-page .bodycontainer2 .xtbg-sketch-logs {
+        position: absolute !important;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 48% !important;
+        max-width: 48% !important;
+        height: auto !important;
+        z-index: 2;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+      }
+
+      /* Design + Build — match Distinctive Plant Garden English title size */
       .xtbg-section-head {
         margin: 0 0 0.95rem;
-        font-size: clamp(1.55rem, 2.6vw, 1.95rem);
+        font-size: clamp(2.7rem, 5.2vw, 3.55rem);
         font-weight: 500;
+        line-height: 1.1;
         color: var(--xtbg-coral) !important;
       }
       .xtbg-section-head::before {
@@ -268,10 +310,12 @@
         margin: 0 0 0.7rem;
         background: var(--xtbg-coral);
       }
+      .xtbg-design-block {
+        margin-top: calc(var(--xtbg-gap) + 2.5rem) !important;
+      }
 
-      /* Secondary section titles */
       .xtbg-section-sub {
-        margin: 0 0 1.15rem;
+        margin: 0 0 0.85rem;
         font-size: clamp(1.4rem, 2.3vw, 1.7rem);
         font-weight: 500;
         color: var(--xtbg-muted) !important;
@@ -280,21 +324,25 @@
         display: none;
       }
 
-      .xtbg-pair-offset {
-        align-items: flex-start;
-      }
-      .xtbg-pair-offset .xtbg-col-media:last-child {
-        margin-top: 2.5rem;
-      }
-
       .xtbg-lede {
-        max-width: 44rem;
+        max-width: 58rem;
         margin: 0.5rem 0 var(--xtbg-gap);
         color: var(--xtbg-ink-soft);
         text-align: left;
       }
+      .xtbg-lede--tight-above {
+        margin-top: 0.35rem;
+      }
+      .xtbg-lede--meander {
+        margin-top: 0.25rem;
+      }
+      /* Keep left edge; extend further right */
+      .xtbg-lede--afternoon {
+        max-width: min(72rem, 100%);
+      }
       .xtbg-lede strong {
-        display: inline;
+        display: block;
+        margin-top: 0.85rem;
         font-weight: 600;
         color: var(--xtbg-ink);
       }
@@ -314,11 +362,15 @@
         flex: 0 0 auto;
         width: auto;
         max-width: 100%;
-        margin-left: clamp(1.5rem, 6vw, 4.5rem);
+        margin-left: clamp(1rem, 4vw, 3rem);
+      }
+      .xtbg-video-row .xtbg-col-text {
+        /* start ~1/4 down the video height */
+        margin-top: calc(var(--xtbg-video-w) * 16 / 9 * 0.25);
       }
       .xtbg-short-wrap {
         position: relative;
-        width: 476px;
+        width: var(--xtbg-video-w);
         max-width: 100%;
         aspect-ratio: 9 / 16;
         overflow: hidden;
@@ -340,24 +392,64 @@
         margin-right: auto;
       }
 
-      /* Herbal pathway: callout over image */
-      .xtbg-overlay-media {
-        position: relative;
+      /* Pathway + 3points: no gap */
+      .xtbg-stack-tight {
+        margin-bottom: 0.75rem !important;
       }
-      .xtbg-overlay-media .xtbg-callout--overlay {
+      .xtbg-stack-tight img {
+        display: block;
+        width: 100%;
+        margin: 0;
+      }
+
+      /* Sculptor callout overlapping dancing grass — centered, hangs below */
+      .xtbg-overlap-wrap {
+        position: relative;
+        margin-bottom: 0 !important;
+        padding-bottom: 4rem;
+      }
+      .xtbg-overlap-wrap .xtbg-callout--bottom-overlap {
         position: absolute;
-        top: 6%;
         left: 50%;
         transform: translateX(-50%);
-        width: min(52rem, 88%);
-        max-width: 52rem;
+        bottom: -1.35rem;
+        z-index: 3;
+        width: min(48rem, calc(100% - 2 * var(--xtbg-inset)));
+        max-width: 48rem;
         margin: 0;
+      }
+
+      /* Herbal: subtitle only, then description over image */
+      .xtbg-herbal-head {
+        margin-bottom: 1.25rem !important;
+      }
+      .xtbg-herbal-media {
+        position: relative;
+      }
+      .xtbg-herbal-desc {
+        max-width: 40rem;
+        margin: 0;
+        color: var(--xtbg-ink-soft) !important;
+        text-align: left;
+        font-size: 1.22rem;
+        line-height: 1.65;
+      }
+      .xtbg-herbal-desc--overlay {
+        position: absolute;
+        top: 3%;
+        left: var(--xtbg-inset);
         z-index: 2;
+        max-width: min(40rem, calc(100% - 2 * var(--xtbg-inset)));
+        background: none;
+      }
+
+      .xtbg-nepenthes-block {
+        margin-top: calc(var(--xtbg-gap) + 1.5rem) !important;
       }
 
       .xtbg-thanks {
         position: relative;
-        margin-top: calc(var(--xtbg-gap) + 0.5rem) !important;
+        margin-top: calc(var(--xtbg-gap) + 12rem) !important;
         margin-bottom: 0 !important;
       }
       .xtbg-thanks-text {
@@ -374,9 +466,10 @@
 
       @media (max-width: 768px) {
         .xtbg-page {
-          font-size: 17px;
+          font-size: 18px;
           --xtbg-inset: 1.25rem;
           --xtbg-gap: 4rem;
+          --xtbg-video-w: 280px;
         }
         .xtbg-page.project-page .bodycontainer,
         .xtbg-page.project-page .bodycontainer2 {
@@ -402,11 +495,30 @@
         .xtbg-dpg .xtbg-section-rule {
           width: 100%;
         }
-        .xtbg-pair-offset .xtbg-col-media:last-child {
-          margin-top: 0;
+        .xtbg-page.project-page .bodycontainer2.xtbg-sketch-stack {
+          width: min(94%, 640px) !important;
+          max-width: 640px !important;
+        }
+        .xtbg-page.project-page .bodycontainer2 .xtbg-sketch-base {
+          width: 72% !important;
+          max-width: 72% !important;
+          margin-left: 2% !important;
+        }
+        .xtbg-page.project-page .bodycontainer2 .xtbg-sketch-logs {
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 48% !important;
+          max-width: 48% !important;
+        }
+        .xtbg-section-head {
+          font-size: clamp(2rem, 7.5vw, 2.6rem);
+        }
+        .xtbg-page p.xtbg-section-en {
+          font-size: clamp(2rem, 7.5vw, 2.6rem) !important;
         }
         .xtbg-title-bar {
-          top: 0.55rem;
+          top: 0.85rem;
           width: calc(100% - 1rem);
           min-height: 5.5rem;
           padding: 0.65rem 0.7rem;
@@ -426,22 +538,26 @@
           font-size: 1.08rem;
           margin-bottom: var(--xtbg-gap);
         }
-        .xtbg-overlay-media .xtbg-callout--overlay {
+        .xtbg-overlap-wrap .xtbg-callout--bottom-overlap {
           position: relative;
-          top: auto;
           left: auto;
+          bottom: auto;
           transform: none;
           width: auto;
           max-width: none;
-          margin: 0 0 1rem;
+          margin: 1rem auto var(--xtbg-gap);
         }
-        .xtbg-section-zh,
-        .xtbg-section-en {
+        .xtbg-herbal-desc--overlay {
+          position: relative;
+          top: auto;
+          left: auto;
+          max-width: none;
+          margin: 0.85rem 0 0;
+        }
+        .xtbg-section-zh {
           font-size: clamp(1.65rem, 7vw, 2.1rem);
         }
-        .xtbg-dpg .xtbg-section-rule {
-          height: 8px;
-        }
+        .xtbg-dpg .xtbg-section-rule,
         .xtbg-section-head::before {
           height: 8px;
         }
@@ -449,8 +565,11 @@
           margin-left: 0;
           width: 100%;
         }
+        .xtbg-video-row .xtbg-col-text {
+          margin-top: 1rem;
+        }
         .xtbg-short-wrap {
-          width: min(100%, 320px);
+          width: min(100%, 280px);
           margin: 0 auto;
         }
         .xtbg-thanks-text {
@@ -510,35 +629,32 @@
                 </div>
             </div>
 
-            <div class="bodycontainer xtbg-pad xtbg-pair-offset">
-                <div class="column xtbg-col-media xtbg-col-media--wide">
-                    <img src="assets/xtbgsketch.png" alt="Hand-drawn site plan sketch for the Distinctive Plant Garden">
-                </div>
-                <div class="column xtbg-col-media xtbg-col-media--narrow">
-                    <img src="assets/logs.png" alt="Moving logs through the garden">
-                </div>
+            <div class="bodycontainer2 xtbg-sketch-stack">
+                <img class="xtbg-sketch-base" src="assets/xtbgsketch.png" alt="Hand-drawn site plan sketch for the Distinctive Plant Garden">
+                <img class="xtbg-sketch-logs" src="assets/logs.png" alt="Moving logs through the garden">
             </div>
 
             <div class="xtbg-pad">
-                <div class="xtbg-callout">
+                <div class="xtbg-callout xtbg-callout--tight-above">
                     <p>Working with the gardeners each morning gave me a keen eye into how people moved through the garden. I took note of popular features and pathways that caused congestion.</p>
                 </div>
             </div>
 
-            <div class="bodycontainer2 xtbg-bleed">
+            <div class="bodycontainer2 xtbg-bleed xtbg-bleed--meander-above">
                 <img src="assets/cl.png" alt="Current layout of the Distinctive Plant Garden">
             </div>
 
             <div class="xtbg-pad">
-                <p class="xtbg-lede">Meandering pathways and scattered, isolated sections lacking a primary circular flow can make it challenging for visitors to find different sections and explore the breadth of the garden. <strong>How do I know what section I am in now? Where should I go next?</strong></p>
+                <p class="xtbg-lede xtbg-lede--meander">Meandering pathways and scattered, isolated sections lacking a primary circular flow can make it challenging for visitors to find different sections and explore the breadth of the garden.
+                <strong>How do I know what section I am in now? Where should I go next?</strong></p>
             </div>
 
-            <div class="bodycontainer2 xtbg-bleed">
+            <div class="bodycontainer2 xtbg-bleed xtbg-bleed--tight-below">
                 <img src="assets/CTF.png" alt="Current traffic flow through the Distinctive Plant Garden">
             </div>
 
             <div class="xtbg-pad">
-                <div class="xtbg-callout">
+                <div class="xtbg-callout xtbg-callout--tight-above">
                     <p>The section featuring <strong>plants that move</strong> captured my and every other visitor’s attention. It included four types of <em>Mimosa pudica</em> but had a focus around a very unique native plant in the pea family.</p>
                 </div>
             </div>
@@ -562,51 +678,43 @@
                 </div>
             </div>
 
-            <div class="bodycontainer2 xtbg-bleed">
+            <div class="bodycontainer2 xtbg-bleed xtbg-stack-tight">
                 <img src="assets/pathway.png" alt="Proposed pathway through the Distinctive Plant Garden">
-            </div>
-
-            <div class="bodycontainer2 xtbg-bleed">
                 <img src="assets/3points.png" alt="Three-point garden redesign diagram">
             </div>
 
             <div class="xtbg-pad">
-                <p class="xtbg-lede">In the afternoons, I used SketchUp to develop a plan for a centralized pathway that encouraged a smoother flow of visitors throughout the garden and ease the bottlenecking that was happening at the entryways. The majority of the garden would be left untouched to keep conscious of cost and preserve already established and effective areas.</p>
+                <p class="xtbg-lede xtbg-lede--tight-above xtbg-lede--afternoon">In the afternoons, I used SketchUp to develop a plan for a centralized pathway that encouraged a smoother flow of visitors throughout the garden and ease the bottlenecking that was happening at the entryways. The majority of the garden would be left untouched to keep conscious of cost and preserve already established and effective areas.</p>
             </div>
 
-            <div class="xtbg-pad">
-                <div class="xtbg-callout">
+            <div class="bodycontainer2 xtbg-bleed xtbg-overlap-wrap">
+                <img src="assets/dancinggrass.png" alt="Dancing grass centerpiece concept">
+                <div class="xtbg-callout xtbg-callout--bottom-overlap">
                     <p>My proposal included the suggestion to commission a local Dai sculptor to create a resemblance of the legendary dancing girl, in addition to raising the pathway-lining beds.</p>
                 </div>
             </div>
 
-            <div class="bodycontainer2 xtbg-bleed">
-                <img src="assets/dancinggrass.png" alt="Dancing grass centerpiece concept">
-            </div>
-
-            <div class="bodycontainer xtbg-pad">
+            <div class="bodycontainer xtbg-pad xtbg-design-block">
                 <div class="column xtbg-col-text xtbg-col-text--narrow">
                     <h3 class="xtbg-section-head">Design + Build</h3>
                     <p>Though this large redesign proposal is still under discussion, I did get to design and build several improvements on site, including a nepenthes installation and pathway through the herbal garden beds.</p>
                 </div>
             </div>
 
-            <div class="xtbg-pad">
+            <div class="xtbg-pad xtbg-herbal-head">
                 <h3 class="xtbg-section-sub">Herbal Pathway</h3>
             </div>
 
-            <div class="bodycontainer2 xtbg-bleed xtbg-overlay-media">
+            <div class="bodycontainer2 xtbg-bleed xtbg-herbal-media">
                 <img src="assets/203.jpg" alt="Herbal pathway mockup">
-                <div class="xtbg-callout xtbg-callout--overlay">
-                    <p>Through discussions with the garden manager, I learned of a desire to create a pathway through the herbal planting beds. Aligned with the vision, I created a quick mockup and materials estimate before installing the flagstone with the garden crew.</p>
-                </div>
+                <p class="xtbg-herbal-desc xtbg-herbal-desc--overlay">Through discussions with the garden manager, I learned of a desire to create a pathway through the herbal planting beds. Aligned with the vision, I created a quick mockup and materials estimate before installing the flagstone with the garden crew.</p>
             </div>
 
             <div class="bodycontainer2 xtbg-centered-media xtbg-pad">
                 <img src="assets/IMG_3805.JPG" alt="Installing flagstone for the herbal pathway">
             </div>
 
-            <div class="bodycontainer xtbg-pad">
+            <div class="bodycontainer xtbg-pad xtbg-nepenthes-block">
                 <div class="column xtbg-col-text xtbg-col-text--narrow">
                     <h3 class="xtbg-section-sub">Nepenthes Installation</h3>
                     <p>In discussions with the garden manager troubleshooting why the nepenthes pitchers were not growing, we agreed to a test of giving them more light.</p>
